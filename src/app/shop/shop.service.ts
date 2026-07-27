@@ -1,0 +1,49 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { IProduct } from '../shared/models/Product';
+import { ICategory } from '../shared/models/Category'; // 👈 استيراد الـ Interface
+import { IPaginatedResponse } from '../shared/models/PaginatedResponse';
+
+export class ShopParams {
+  categoryId: number = 0; // 0 تعني "الكل" (All)
+  sort: string = 'name';
+  pageNumber: number = 1;
+  pageSize: number = 6;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ShopService {
+  private baseUrl = environment.baseUrl;
+
+  constructor(private http: HttpClient) {}
+
+  // دالة جلب المنتجات
+  getProducts(shopParams: ShopParams): Observable<IPaginatedResponse<IProduct>> {
+    let params = new HttpParams();
+
+    if (shopParams.sort) {
+      params = params.append('Sort', shopParams.sort);
+    }
+
+    if (shopParams.categoryId && shopParams.categoryId !== 0) {
+      params = params.append('CategoryId', shopParams.categoryId.toString());
+    }
+
+    params = params.append('pageSize', shopParams.pageSize.toString());
+    params = params.append('PageNumber', shopParams.pageNumber.toString());
+
+    return this.http.get<IPaginatedResponse<IProduct>>(
+      `${this.baseUrl}/api/Products/get-all-custom`,
+      { params }
+    );
+  }
+
+  // 👈 دالة جلب الأقسام من الـ API المعروض في الصورة
+  getCategories(): Observable<ICategory[]> {
+    return this.http.get<ICategory[]>(`${this.baseUrl}/api/Categories/get-all`);
+  }
+}
