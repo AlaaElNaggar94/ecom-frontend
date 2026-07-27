@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { environment } from '../environments/environment';
+// import { ApiModule, Configuration } from './backend/api';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,17 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
     BrowserModule,
     AppRoutingModule,
     // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///
+    
+    // // ربط ملفات الـ API بالمشروع وتحديد رابط الباك إند
+    // ApiModule.forRoot(() => new Configuration({
+    //   basePath:  environment.baseUrl // رابط الباك إند الرئيسي
+    // }))
   ],
   providers: [
     provideClientHydration(),
     // provideHttpClient() // 👈 تفعيل خدمات HTTP  ///  جديده ////
     provideHttpClient(withFetch()) // 👈 2. إضافة withFetch هنا() // 👈 تفعيل خدمات HTTP  ///  جديده ////
+    
   ],
   bootstrap: [AppComponent]
 })
