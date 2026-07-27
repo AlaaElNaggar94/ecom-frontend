@@ -4,7 +4,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,10 +14,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
     CoreModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    // provideHttpClient() // 👈 تفعيل خدمات HTTP  ///  جديده ////
+    provideHttpClient(withFetch()) // 👈 2. إضافة withFetch هنا() // 👈 تفعيل خدمات HTTP  ///  جديده ////
   ],
   bootstrap: [AppComponent]
 })
