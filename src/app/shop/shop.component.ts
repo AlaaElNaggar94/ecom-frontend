@@ -96,4 +96,28 @@ export class ShopComponent implements OnInit {
     this.shopParams = new ShopParams();
     this.getProducts();
   }
+
+
+  selectedIndexMap = new Map<number, number>(); // key = productId (أو أي id عندك)
+
+onSelectPhoto(item: any, index: number) {
+  const key = item.id; // عدّلها لو اسم الـ id مختلف عندك
+  this.selectedIndexMap.set(key, index);
+}
+
+selectedPhotoIndex(item: any): number {
+  const key = item.id;
+  return this.selectedIndexMap.get(key) ?? 0;
+}
+
+getMainPhotoUrl(item: any): string {
+  if (!item.photos || item.photos.length === 0) {
+    return 'assets/images/placeholder.png';
+  }
+
+  const idx = this.selectedPhotoIndex(item);
+  const safeIdx = Math.max(0, Math.min(idx, item.photos.length - 1));
+  return 'http://localhost:4321' + item.photos[safeIdx].imageUrl;
+}
+
 }

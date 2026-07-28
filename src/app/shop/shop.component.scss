@@ -21,3 +21,37 @@
     box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
   }
 }
+
+.product-media .big-photo {
+  height: 220px;         /* نفس ارتفاع صورتك الكبيرة */
+  object-fit: contain;   /* زي ما كنت مستخدم */
+  width: 100%;
+}
+
+.thumbs {
+  overflow-x: auto;      /* لو الصور كتير تخليها تمرير */
+  padding-bottom: 2px;
+}
+
+.thumb-btn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  outline: none;
+}
+
+.thumb-photo {
+  width: 52px;          /* حجم الثمب الصغيرة */
+  height: 52px;
+  object-fit: contain;
+  border: 1px solid #e9ecef; /* حد خفيف */
+  border-radius: 6px;
+  background: #fff;
+}
+
+.thumb-btn.active .thumb-photo {
+  border-color: #6f42c1;      /* لون الثيم */
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.15);
+}
