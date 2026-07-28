@@ -9,6 +9,12 @@ import {
 import { ICategory } from '../../../shared/models/Category';
 import { ShopParams } from '../../shop.service';
 
+export interface ISortOptions 
+ {
+  id: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-shop-filters',
   templateUrl: './shop-filters.component.html',
@@ -27,6 +33,13 @@ export class ShopFiltersComponent {
 
   @Output()
   sortChanged = new EventEmitter<string>();
+
+  // قائمة خيارات الترتيب
+sortOptions :ISortOptions[] = [
+  { name: 'Name', id: 'name' },
+  { name: 'Price: Low to High', id: 'PriceAsc' },
+  { name: 'Price: High to Low', id: 'PriceDesc' }
+];
 
   onCategorySelected(categoryId: number): void {
     this.categoryChanged.emit(categoryId);

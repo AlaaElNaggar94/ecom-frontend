@@ -8,6 +8,7 @@ import { ProductImagesComponent } from './components/product-list/product-card/p
 import { ShopFiltersComponent } from './components/shop-filters/shop-filters.component';
 import { ShopSearchComponent } from './components/shop-search/shop-search.component';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { FormsModule } from '@angular/forms';
     ShopFiltersComponent,
     ShopSearchComponent,
   ],
-  imports: [CoreModule, CommonModule, FormsModule],
-  exports: [ShopComponent,ShopSearchComponent],
+  imports: [CoreModule,SharedModule, CommonModule, FormsModule],
+  exports: [ShopComponent,CoreModule],
 })
 export class ShopModule {}

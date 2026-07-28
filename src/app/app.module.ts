@@ -20,7 +20,6 @@ import { ShopModule } from './shop/shop.module';
   declarations: [AppComponent],
   imports: [
     ShopModule,
-    CoreModule,
     BrowserModule,
     AppRoutingModule,
     // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///

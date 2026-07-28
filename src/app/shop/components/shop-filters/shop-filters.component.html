@@ -7,11 +7,9 @@
   [value]="shopParams.sort"
   (change)="onSortSelected($event)"
 >
-  <option value="">Name</option>
-
-  <option value="PriceAsc">Price: Low to High</option>
-
-  <option value="PriceDesc">Price: High to Low</option>
+  <option *ngFor="let option of sortOptions" [value]="option.id">
+    {{ option.name }}
+  </option>
 </select>
 
 <!-- Categories -->

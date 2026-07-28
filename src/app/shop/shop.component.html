@@ -43,12 +43,37 @@
         class="d-flex justify-content-center mt-4"
         *ngIf="totalCount > 0 && !isLoading"
       >
-        <app-pager
+        <!-- <pagination [totalItems]="totalCount"></pagination> -->
+        <div class="row">
+          <div class="col-xs-12 col-12">
+            <pagination
+              [totalItems]="totalCount"
+              [(ngModel)]="shopParams.pageNumber"
+              (pageChanged)="onPageChanged($event)"
+              [itemsPerPage]="shopParams.pageSize"
+            ></pagination>
+          </div>
+        </div>
+        <!-- <app-pager
           [totalCount]="totalCount"
           [pageSize]="shopParams.pageSize"
           [pageNumber]="shopParams.pageNumber"
           (pageChanged)="onPageChanged($event)"
-        ></app-pager>
+        ></app-pager> -->
+        <!-- <pagination
+          [totalItems]="totalCount"
+          [(ngModel)]="shopParams.pageNumber"
+          [itemsPerPage]="shopParams.pageSize"
+          (pageChanged)="onPageChanged($event)"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          lastText="&raquo;"
+          class="pagination-sm"
+        >
+        </pagination> -->
       </div>
     </section>
   </div>

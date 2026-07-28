@@ -11,6 +11,7 @@ import { ShopService, ShopParams } from './shop.service';
 import { IProduct } from '../shared/models/Product';
 import { IPaginatedResponse } from '../shared/models/PaginatedResponse';
 import { ICategory } from '../shared/models/Category';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -26,7 +27,7 @@ export class ShopComponent implements OnInit {
 
   totalCount: number = 0;
   isLoading: boolean = true;
-
+  smallnumPages = 0;
   selectedIndexMap = new Map<number, number>(); // key = productId (أو أي id عندك)
 
   constructor(
@@ -36,9 +37,35 @@ export class ShopComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.getProducts();
-      this.getCategories(); // تفعيلها عند وجود Api للأقسام
+      this.loadAllData(); // 👈 استدعاء الدالة المجمعة فقط عند فتح المتصفح
     }
+  }
+
+  loadAllData(): void {
+    this.isLoading = true; // 1. تشغيل spinner التحميل قبلهما هم الاثنين
+
+    forkJoin({
+      productsRes: this.shopService.getProducts(this.shopParams),
+      categoriesRes: this.shopService.getCategories(),
+    }).subscribe({
+      next: ({ productsRes, categoriesRes }) => {
+        // 2. استقبال بيانات الـ Products والـ Pagination
+        this.products = productsRes.data;
+        this.shopParams.pageNumber = productsRes.pageNumber;
+        this.shopParams.pageSize = productsRes.pageSize;
+        this.totalCount = productsRes.totalCount;
+
+        // 3. استقبال بيانات الـ Categories
+        this.categories = categoriesRes;
+
+        // 4. إيقاف التحميل
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('حدث خطأ أثناء تحميل البيانات:', err);
+        this.isLoading = false;
+      },
+    });
   }
 
   getProducts(): void {
@@ -46,8 +73,9 @@ export class ShopComponent implements OnInit {
     this.shopService.getProducts(this.shopParams).subscribe({
       next: (response: IPaginatedResponse<IProduct>) => {
         this.products = response.data;
-        this.shopParams.pageNumber = response.pageNumber;
-        this.shopParams.pageSize = response.pageSize;
+        // this.shopParams.pageNumber = response.pageNumber;
+        // this.shopParams.pageSize = response.pageSize;
+        this.shopParams = { ...this.shopParams, pageNumber: response.pageNumber,pageSize: response.pageSize };
         this.totalCount = response.totalCount;
         this.isLoading = false;
       },
@@ -82,10 +110,14 @@ export class ShopComponent implements OnInit {
     this.getProducts();
   }
 
-  onPageChanged(eventPage: number): void {
-    if (this.shopParams.pageNumber !== eventPage) {
-      this.shopParams.pageNumber = eventPage;
+  onPageChanged(eventPage: any): void {
+    // debugger
+    if (this.shopParams.pageNumber !== eventPage.page) {
+      this.shopParams.pageNumber = eventPage.page;
       this.getProducts();
+      // console.log("F",this.shopParams);
+      // console.log("F",this.totalCount);
+      
     }
   }
 
