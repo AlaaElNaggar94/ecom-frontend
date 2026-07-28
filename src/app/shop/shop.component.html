@@ -2,163 +2,41 @@
   <div class="row">
     <!-- Sidebar: الفلترة والترتيب -->
     <section class="col-md-3">
-      <!-- 1. الترتيب (Sorting) -->
-      <h5 class="fw-bold mb-3">Sorting</h5>
-      <select class="form-select mb-4" (change)="onSortSelected($event)">
-        <option value="">Name</option>
-        <option value="PriceAsc">Price: Low to High</option>
-        <option value="PriceDesc">Price: High to Low</option>
-      </select>
-
-      <!-- 2. الأقسام (Categories) -->
-      <h5 class="fw-bold mb-3">Categories</h5>
-      <ul class="list-group my-3">
-        <!-- الخيار الافتراضي لعرض الكل -->
-        <li
-          class="list-group-item list-group-item-action cursor-pointer"
-          [class.active]="shopParams.categoryId === 0"
-          (click)="onCategorySelected(0)"
-        >
-          All
-        </li>
-
-        <!-- قائمة الأقسام القادمة من الـ API -->
-        <li
-          class="list-group-item list-group-item-action cursor-pointer"
-          *ngFor="let category of categories"
-          [class.active]="category.id === shopParams.categoryId"
-          (click)="onCategorySelected(category.id)"
-        >
-          {{ category.name }}
-        </li>
-      </ul>
+      <app-shop-filters
+        [categories]="categories"
+        [shopParams]="shopParams"
+        (categoryChanged)="onCategorySelected($event)"
+        (sortChanged)="onSortSelected($event)"
+      >
+      </app-shop-filters>
     </section>
 
     <!-- Main Content: البحث والمنتجات والباجنيشن -->
     <section class="col-md-9">
       <!-- Header: عدد النتائج وشريط البحث -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <!-- Showing Counter -->
-        <span class="text-muted" *ngIf="totalCount > 0">
-          showing
-          <strong>
-            {{ (shopParams.pageNumber - 1) * shopParams.pageSize + 1 }} -
-            {{
-              shopParams.pageNumber * shopParams.pageSize > totalCount
-                ? totalCount
-                : shopParams.pageNumber * shopParams.pageSize
-            }}
-          </strong>
-          of <strong>{{ totalCount }}</strong>
-        </span>
-        <span class="text-muted" *ngIf="totalCount === 0">0 results</span>
-
-        <!-- Search Bar -->
-        <div class="d-flex gap-2" style="max-width: 350px">
-          <input
-            #search
-            type="text"
-            class="form-control"
-            placeholder="Search..."
-            (keyup.enter)="onSearch()"
-          />
-          <button class="btn btn-danger text-white px-3" (click)="onSearch()">
-            Search
-          </button>
-          <button class="btn btn-dark text-white px-3" (click)="onReset()">
-            Reset
-          </button>
-        </div>
-      </div>
+      <app-shop-search
+        [totalCount]="totalCount"
+        [shopParams]="shopParams"
+        (search)="onSearch($event)"
+        (reset)="onReset()"
+      >
+      </app-shop-search>
 
       <!-- Loading Spinner -->
-      <div *ngIf="isLoading" class="text-center my-5 py-5">
+      <!-- <div *ngIf="isLoading" class="text-center my-5 py-5">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-      </div>
+      </div> -->
 
       <!-- Products Grid -->
-      <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="!isLoading">
-        <div class="col" *ngFor="let item of products">
-          <div
-            class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative"
-          >
-            <!-- Product Images -->
-            <div class="product-media">
-              <!-- Big Image -->
-              <img
-                [src]="getMainPhotoUrl(item)"
-                class="card-img-top big-photo"
-                [alt]="item.name"
-              />
-
-              <!-- Thumbnails -->
-              <div class="thumbs d-flex gap-2 mt-2">
-                <button
-                  *ngFor="let p of item.photos; let i = index"
-                  type="button"
-                  class="thumb-btn"
-                  [class.active]="i === selectedPhotoIndex(item)"
-                  (click)="onSelectPhoto(item, i)"
-                  [attr.aria-label]="'Select photo ' + (i + 1)"
-                >
-                  <img
-                    class="thumb-photo"
-                    [src]="'http://localhost:4321' + p.imageUrl"
-                    [alt]="item.name + ' thumbnail ' + (i + 1)"
-                  />
-                </button>
-              </div>
-            </div>
-
-            <div class="card-body d-flex flex-column">
-              <!-- Title -->
-              <h5
-                class="card-title text-truncate fw-bold mb-1"
-                [title]="item.name"
-              >
-                {{ item.name }}
-              </h5>
-
-              <!-- Description -->
-              <p
-                class="card-text text-muted small text-truncate-2 mb-3"
-                style="font-size: 0.85rem"
-              >
-                {{ item.description }}
-              </p>
-
-              <!-- Prices -->
-              <div class="d-flex align-items-center gap-2 mb-3 mt-auto">
-                <span
-                  class="text-muted text-decoration-line-through fs-6"
-                  *ngIf="item.oldPrice"
-                >
-                  ${{ item.oldPrice }}
-                </span>
-                <span class="fw-bold fs-5 text-dark">
-                  ${{ item.newPrice }}
-                </span>
-              </div>
-
-              <!-- Buttons -->
-              <div class="d-flex gap-2">
-                <button
-                  class="btn btn-dark btn-sm flex-fill d-flex align-items-center justify-content-center gap-1"
-                >
-                  <i class="fa fa-shopping-cart"></i> Add to Cart
-                </button>
-                <button
-                  class="btn btn-success btn-sm flex-fill d-flex align-items-center justify-content-center gap-1"
-                >
-                  <i class="fa fa-info-circle"></i> Details
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-product-list
+        [products]="products"
+        [isLoading]="isLoading"
+        (addToCart)="onAddToCart($event)"
+        (details)="onDetails($event)"
+      >
+      </app-product-list>
 
       <!-- Pagination Component -->
       <div

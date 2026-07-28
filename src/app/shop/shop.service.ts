@@ -11,10 +11,11 @@ export class ShopParams {
   sort: string = 'name';
   pageNumber: number = 1;
   pageSize: number = 6;
+  search: string = '';
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShopService {
   private baseUrl = environment.baseUrl;
@@ -22,7 +23,9 @@ export class ShopService {
   constructor(private http: HttpClient) {}
 
   // دالة جلب المنتجات
-  getProducts(shopParams: ShopParams): Observable<IPaginatedResponse<IProduct>> {
+  getProducts(
+    shopParams: ShopParams,
+  ): Observable<IPaginatedResponse<IProduct>> {
     let params = new HttpParams();
 
     if (shopParams.sort) {
@@ -33,12 +36,16 @@ export class ShopService {
       params = params.append('CategoryId', shopParams.categoryId.toString());
     }
 
+    if (shopParams.search) {
+      params = params.append('Search', shopParams.search);
+    }
+
     params = params.append('pageSize', shopParams.pageSize.toString());
     params = params.append('PageNumber', shopParams.pageNumber.toString());
 
     return this.http.get<IPaginatedResponse<IProduct>>(
       `${this.baseUrl}/api/Products/get-all-custom`,
-      { params }
+      { params },
     );
   }
 

@@ -27,6 +27,8 @@ export class ShopComponent implements OnInit {
   totalCount: number = 0;
   isLoading: boolean = true;
 
+  selectedIndexMap = new Map<number, number>(); // key = productId (أو أي id عندك)
+
   constructor(
     private shopService: ShopService,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -55,6 +57,7 @@ export class ShopComponent implements OnInit {
       },
     });
   }
+
   // 👈 دالة جلب الأقسام
   getCategories(): void {
     this.shopService.getCategories().subscribe({
@@ -73,8 +76,9 @@ export class ShopComponent implements OnInit {
     this.getProducts();
   }
 
-  onSortSelected(event: any): void {
-    this.shopParams.sort = event.target.value;
+  onSortSelected(sort: string): void {
+    this.shopParams.sort = sort;
+    this.shopParams.pageNumber = 1;
     this.getProducts();
   }
 
@@ -85,39 +89,59 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  onSearch(): void {
-    // إضافة قيمة البحث في حالة استخدام Search Query في API
+  onSearch(search: string): void {
+    this.shopParams.search = search;
     this.shopParams.pageNumber = 1;
     this.getProducts();
   }
 
   onReset(): void {
-    if (this.searchTerm) this.searchTerm.nativeElement.value = '';
     this.shopParams = new ShopParams();
     this.getProducts();
   }
 
-
-  selectedIndexMap = new Map<number, number>(); // key = productId (أو أي id عندك)
-
-onSelectPhoto(item: any, index: number) {
-  const key = item.id; // عدّلها لو اسم الـ id مختلف عندك
-  this.selectedIndexMap.set(key, index);
-}
-
-selectedPhotoIndex(item: any): number {
-  const key = item.id;
-  return this.selectedIndexMap.get(key) ?? 0;
-}
-
-getMainPhotoUrl(item: any): string {
-  if (!item.photos || item.photos.length === 0) {
-    return 'assets/images/placeholder.png';
+  selectedPhotoIndex(item: any): number {
+    const key = item.id;
+    return this.selectedIndexMap.get(key) ?? 0;
   }
 
-  const idx = this.selectedPhotoIndex(item);
-  const safeIdx = Math.max(0, Math.min(idx, item.photos.length - 1));
-  return 'http://localhost:4321' + item.photos[safeIdx].imageUrl;
-}
+  onAddToCart(product: IProduct): void {
+    console.log('Add To Cart', product);
+  }
 
+  onDetails(product: IProduct): void {
+    console.log('Details', product);
+  }
+
+  // onSortSelected(event: any): void {
+  //   this.shopParams.sort = event.target.value;
+  //   this.getProducts();
+  // }
+
+  // onSearch(): void {
+  //   // إضافة قيمة البحث في حالة استخدام Search Query في API
+  //   this.shopParams.pageNumber = 1;
+  //   this.getProducts();
+  // }
+
+  // onReset(): void {
+  //   if (this.searchTerm) this.searchTerm.nativeElement.value = '';
+  //   this.shopParams = new ShopParams();
+  //   this.getProducts();
+  // }
+
+  // getMainPhotoUrl(item: any): string {
+  //   if (!item.photos || item.photos.length === 0) {
+  //     return 'assets/images/placeholder.png';
+  //   }
+
+  //   const idx = this.selectedPhotoIndex(item);
+  //   const safeIdx = Math.max(0, Math.min(idx, item.photos.length - 1));
+  //   return 'http://localhost:4321' + item.photos[safeIdx].imageUrl;
+  // }
+
+  // onSelectPhoto(item: any, index: number) {
+  //   const key = item.id; // عدّلها لو اسم الـ id مختلف عندك
+  //   this.selectedIndexMap.set(key, index);
+  // }
 }

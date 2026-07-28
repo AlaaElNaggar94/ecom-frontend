@@ -1,0 +1,29 @@
+<div class="product-media">
+  <!-- Main Image -->
+
+  <div class="main-image">
+    <img
+      [src]="currentImage"
+      [alt]="productName || 'Product'"
+      class="big-photo"
+    />
+  </div>
+
+  <!-- Thumbnails -->
+
+  <div class="thumbs" *ngIf="photos?.length">
+    <button
+      *ngFor="let photo of photos; let i = index"
+      type="button"
+      class="thumb-btn"
+      [class.active]="selectedIndex === i"
+      (click)="selectPhoto(i)"
+    >
+      <img
+        class="thumb-photo"
+        [src]="baseUrl + photo.imageUrl"
+        [alt]="productName"
+      />
+    </button>
+  </div>
+</div>

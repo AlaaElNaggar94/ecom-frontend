@@ -1,0 +1,38 @@
+<!-- Sorting -->
+
+<h5 class="fw-bold mb-3">Sorting</h5>
+
+<select
+  class="form-select mb-4"
+  [value]="shopParams.sort"
+  (change)="onSortSelected($event)"
+>
+  <option value="">Name</option>
+
+  <option value="PriceAsc">Price: Low to High</option>
+
+  <option value="PriceDesc">Price: High to Low</option>
+</select>
+
+<!-- Categories -->
+
+<h5 class="fw-bold mb-3">Categories</h5>
+
+<ul class="list-group">
+  <li
+    class="list-group-item list-group-item-action cursor-pointer"
+    [class.active]="shopParams.categoryId == 0"
+    (click)="onCategorySelected(0)"
+  >
+    All
+  </li>
+
+  <li
+    *ngFor="let category of categories; trackBy: trackByCategory"
+    class="list-group-item list-group-item-action cursor-pointer"
+    [class.active]="category.id === shopParams.categoryId"
+    (click)="onCategorySelected(category.id)"
+  >
+    {{ category.name }}
+  </li>
+</ul>
