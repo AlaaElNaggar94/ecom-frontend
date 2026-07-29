@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+// الألوان الأساسية المستخرجة من تصميمك
+$primary-purple: #5b46bc;
+$dark-btn: #1d212a;
+$green-btn: #10805b;
+
+.text-primary-custom {
+  color: $primary-purple !important;
+}
+
+.hero-section {
+  background-color: $primary-purple;
+}
+
+.btn-action {
+  background-color: #e91e63;
+  color: #fff;
+  border: none;
+  &:hover {
+    background-color: darken(#e91e63, 8%);
+    color: #fff;
+  }
+}
+
+.btn-dark-custom {
+  background-color: $dark-btn;
+  color: #fff;
+  border: none;
+  &:hover {
+    background-color: lighten($dark-btn, 10%);
+    color: #fff;
+  }
+}
+
+.btn-success-custom {
+  background-color: $green-btn;
+  color: #fff;
+  border: none;
+  &:hover {
+    background-color: darken($green-btn, 8%);
+    color: #fff;
+  }
+}
+
+.product-card {
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-4px);
+  }
+  img {
+    height: 240px;
+    object-fit: contain;
+  }
+}

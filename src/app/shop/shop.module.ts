@@ -9,6 +9,7 @@ import { ShopFiltersComponent } from './components/shop-filters/shop-filters.com
 import { ShopSearchComponent } from './components/shop-search/shop-search.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ShopRoutingModule } from './shop-routing.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,13 @@ import { SharedModule } from '../shared/shared.module';
     ShopFiltersComponent,
     ShopSearchComponent,
   ],
-  imports: [CoreModule,SharedModule, CommonModule, FormsModule],
-  exports: [ShopComponent,CoreModule],
+  imports: [
+    CoreModule,
+    SharedModule,
+    CommonModule,
+    FormsModule,
+    ShopRoutingModule,
+  ],
+  exports: [ShopComponent, CoreModule],
 })
 export class ShopModule {}

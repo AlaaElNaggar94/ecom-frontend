@@ -46,12 +46,19 @@
         <!-- <pagination [totalItems]="totalCount"></pagination> -->
         <div class="row">
           <div class="col-xs-12 col-12">
-            <pagination
+            <app-pagination
+              [totalCount]="totalCount"
+              [pageNumber]="shopParams.pageNumber"
+              [pageSize]="shopParams.pageSize"
+              (pageChanged)="onPageChanged($event)"
+            >
+            </app-pagination>
+            <!-- <pagination
               [totalItems]="totalCount"
               [(ngModel)]="shopParams.pageNumber"
               (pageChanged)="onPageChanged($event)"
               [itemsPerPage]="shopParams.pageSize"
-            ></pagination>
+            ></pagination> -->
           </div>
         </div>
         <!-- <app-pager

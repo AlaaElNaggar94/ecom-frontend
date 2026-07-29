@@ -14,12 +14,13 @@ import {
 } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { ShopModule } from './shop/shop.module';
+import { HomeModule } from './features/components/home/home.module';
 // import { ApiModule, Configuration } from './backend/api';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    ShopModule,
+    CoreModule,
     BrowserModule,
     AppRoutingModule,
     // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///
