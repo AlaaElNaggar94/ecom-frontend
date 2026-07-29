@@ -12,6 +12,7 @@ import { IProduct } from '../shared/models/Product';
 import { IPaginatedResponse } from '../shared/models/PaginatedResponse';
 import { ICategory } from '../shared/models/Category';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shop',
@@ -33,6 +34,7 @@ export class ShopComponent implements OnInit {
   constructor(
     private shopService: ShopService,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +77,11 @@ export class ShopComponent implements OnInit {
         this.products = response.data;
         // this.shopParams.pageNumber = response.pageNumber;
         // this.shopParams.pageSize = response.pageSize;
-        this.shopParams = { ...this.shopParams, pageNumber: response.pageNumber,pageSize: response.pageSize };
+        this.shopParams = {
+          ...this.shopParams,
+          pageNumber: response.pageNumber,
+          pageSize: response.pageSize,
+        };
         this.totalCount = response.totalCount;
         this.isLoading = false;
       },
@@ -117,7 +123,6 @@ export class ShopComponent implements OnInit {
       this.getProducts();
       // console.log("F",this.shopParams);
       // console.log("F",this.totalCount);
-      
     }
   }
 
@@ -142,7 +147,7 @@ export class ShopComponent implements OnInit {
   }
 
   onDetails(product: IProduct): void {
-    console.log('Details', product);
+    this.router.navigate(['shopping/product', product.id]);
   }
 
   // onSortSelected(event: any): void {

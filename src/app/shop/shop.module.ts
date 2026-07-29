@@ -10,6 +10,7 @@ import { ShopSearchComponent } from './components/shop-search/shop-search.compon
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ShopRoutingModule } from './shop-routing.module';
     ProductListComponent,
     ShopFiltersComponent,
     ShopSearchComponent,
+    ProductDetailsComponent,
   ],
   imports: [
     CoreModule,

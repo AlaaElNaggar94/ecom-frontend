@@ -53,4 +53,8 @@ export class ShopService {
   getCategories(): Observable<ICategory[]> {
     return this.http.get<ICategory[]>(`${this.baseUrl}/api/Categories/get-all`);
   }
+
+  getProductById(id: number): Observable<IProduct> {
+    return this.http.get<IProduct>(`${this.baseUrl}/api/Products/get-by-id/${id}`);
+  }
 }
