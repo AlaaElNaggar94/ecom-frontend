@@ -1,1 +1,15 @@
-<p>tes2 works!</p>
+<div>
+  <h2>🛒 صفحة التسوق</h2>
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5>منتج {{i}}</h5>
+          <p class="text-muted">وصف قصير للمنتج</p>
+          <p class="fw-bold text-success">{{i * 50}} ج.م</p>
+          <button class="btn btn-sm btn-outline-primary">أضف للسلة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

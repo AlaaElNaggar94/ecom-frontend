@@ -1,2 +1,92 @@
-<app-nav-bar></app-nav-bar>
-<!-- <router-outlet></router-outlet> -->
+<div class="container-fluid mt-3">
+  <div class="list-group sticky-top" style="top: 20px">
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="list-group-item list-group-item-action"
+      style="
+        text-align: center;
+        font-size: 30px;
+        background-color: #e91e63;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+      "
+    >
+      🏠 الرئيسية - المشاريع الخاصة
+    </a>
+  </div>
+  <div class="row">
+    <!-- ========== SIDEBAR ========== -->
+    <div class="col-md-3 col-lg-2">
+      <div class="list-group sticky-top" style="top: 20px">
+        <a
+          routerLink="/test2/home"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          🏠 الرئيسية
+        </a>
+        <a
+          routerLink="/test2/shopping"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          🛒 التسوق
+        </a>
+        <a
+          routerLink="/test2/best-seller"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          ⭐ الأكثر مبيعاً
+        </a>
+        <a
+          routerLink="/test2/about-us"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          ℹ️ من نحن
+        </a>
+        <a
+          routerLink="/test2/cart"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          🛍️ السلة
+        </a>
+        <a
+          routerLink="/test2/my-orders"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          📦 طلباتي
+        </a>
+        <a
+          routerLink="/test2/login"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          🔑 تسجيل الدخول
+        </a>
+        <a
+          routerLink="/test2/register"
+          routerLinkActive="active"
+          class="list-group-item list-group-item-action"
+        >
+          📝 إنشاء حساب
+        </a>
+      </div>
+    </div>
+
+    <!-- ========== المحتوى ========== -->
+    <div class="col-md-9 col-lg-10">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
