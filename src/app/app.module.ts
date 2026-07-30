@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   BrowserModule,
   provideClientHydration,
@@ -17,12 +17,16 @@ import { ShopModule } from './shop/shop.module';
 import { HomeModule } from './features/components/home/home.module';
 // import { ApiModule, Configuration } from './backend/api';
 
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     CoreModule,
     BrowserModule,
     AppRoutingModule,
+    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' })
     // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///
 
     // // ربط ملفات الـ API بالمشروع وتحديد رابط الباك إند
@@ -35,6 +39,8 @@ import { HomeModule } from './features/components/home/home.module';
     // provideHttpClient() // 👈 تفعيل خدمات HTTP  ///  جديده ////
     provideHttpClient(withFetch()), // 👈 2. إضافة withFetch هنا() // 👈 تفعيل خدمات HTTP  ///  جديده ////
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

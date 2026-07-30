@@ -29,7 +29,6 @@ import { NgxImageZoomModule } from 'ngx-image-zoom'; // 👈 استيراد ال
     CommonModule,
     FormsModule,
     ShopRoutingModule,
-    NgxImageZoomModule // 👈 إضافة NgxImageZoomModule هنا وليس NgxImageZoomComponent
   ],
   exports: [ShopComponent, CoreModule],
 })
