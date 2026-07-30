@@ -4,6 +4,7 @@
     <div class="col-md-5">
       <div *ngIf="product.photos && product.photos.length > 0">
         <app-product-images
+          [useZoom]="true"
           [photos]="product.photos"
           [productName]="product.name || ''"
           [baseUrl]="baseUrl"

@@ -1,38 +1,49 @@
-import { Component, Input } from '@angular/core';
-import { IPhoto } from '../../../../../shared/models/photo';
-import { environment } from '../../../../../../environments/environment';
+// src/app/shop/components/product-list/product-card/product-images/product-images.component.ts
+import { Component, Input, OnInit } from '@angular/core';
 
-// export interface IProductPhoto {
-//   id: number;
-//   imageUrl: string;
-// }
+export interface ProductPhoto {
+  id?: number | string;
+  imageUrl: string;
+  largeImageUrl?: string;
+}
 
 @Component({
   selector: 'app-product-images',
   templateUrl: './product-images.component.html',
-  styleUrls: ['./product-images.component.scss'],
+  styleUrls: ['./product-images.component.scss']
 })
-export class ProductImagesComponent {
-  @Input() photos: IPhoto[] | null | undefined = [];
+export class ProductImagesComponent implements OnInit {
+  @Input() photos: ProductPhoto[] = [];
+  @Input() baseUrl: string = '';
+  @Input() productName: string = '';
+  @Input() useZoom: boolean = false;
 
-  @Input() productName = '';
+  selectedIndex: number = 0;
+  currentImage: string = '';
 
-  // @Input() baseUrl = 'http://localhost:4321';
-  @Input() baseUrl = environment.baseUrl;
+  // 👈 يجب تعريف المتغيرين هنا لحل خطأ Property 'fullImage' / 'thumbImage'
+  thumbImage: string = '';
+  fullImage: string = '';
 
-  selectedIndex = 0;
+  ngOnInit(): void {
+    if (this.photos && this.photos.length > 0) {
+      this.selectPhoto(0);
+    }
+  }
 
   selectPhoto(index: number): void {
     this.selectedIndex = index;
-  }
+    const selected = this.photos[index];
 
-  get currentImage(): string {
-    if (!this.photos?.length) {
-      return 'assets/images/placeholder.png';
+    if (selected) {
+      const fullPath = this.baseUrl + selected.imageUrl;
+      const largePath = selected.largeImageUrl 
+        ? this.baseUrl + selected.largeImageUrl 
+        : fullPath;
+
+      this.currentImage = fullPath;
+      this.thumbImage = fullPath;
+      this.fullImage = largePath;
     }
-
-    const index = Math.min(this.selectedIndex, this.photos.length - 1);
-
-    return this.baseUrl + this.photos[index].imageUrl;
   }
 }

@@ -7,16 +7,16 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss']
+  styleUrls: ['./product-details.component.scss'],
 })
 export class ProductDetailsComponent implements OnInit {
   product?: IProduct;
-   quantity: number = 1;
+  quantity: number = 1;
   readonly baseUrl = environment.baseUrl;
 
   constructor(
     private shopService: ShopService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -32,23 +32,24 @@ export class ProductDetailsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error fetching product details:', err);
-        }
+        },
       });
     }
   }
   // ... باقي المتغيرات
- 
 
   // زيادة الكمية
   incrementQuantity(): void {
-    if (this.quantity < 10) { // حد أقصى للكمية اختياري
+    if (this.quantity < 10) {
+      // حد أقصى للكمية اختياري
       this.quantity++;
     }
   }
 
   // تقليل الكمية
   decrementQuantity(): void {
-    if (this.quantity > 1) { // عدم التقليل عن 1
+    if (this.quantity > 1) {
+      // عدم التقليل عن 1
       this.quantity--;
     }
   }

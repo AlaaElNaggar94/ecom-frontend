@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { NgxImageZoomModule } from 'ngx-image-zoom'; // 👈 استيراد الموديول
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     CommonModule,
     FormsModule,
     ShopRoutingModule,
+    NgxImageZoomModule // 👈 إضافة NgxImageZoomModule هنا وليس NgxImageZoomComponent
   ],
   exports: [ShopComponent, CoreModule],
 })
