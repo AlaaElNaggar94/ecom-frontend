@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ShopComponent } from './shop/shop.component';
-import { HomeComponent } from './features/components/home/home.component';
-import { AboutUsComponent } from './features/components/about-us/about-us.component';
-import { BestSellerComponent } from './features/components/best-seller/best-seller.component';
 import { NotFoundComponent } from './features/components/not-found/not-found.component';
 
 // export const routes: Routes = [

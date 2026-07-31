@@ -1,46 +1,32 @@
+// src/app/app.module.ts
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
+import { provideClientHydration } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // ✅ Keep this
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import {
-  HttpClientModule,
-  provideHttpClient,
-  withFetch,
-} from '@angular/common/http';
-import { environment } from '../environments/environment';
-import { ShopModule } from './shop/shop.module';
-import { HomeModule } from './features/components/home/home.module';
-// import { ApiModule, Configuration } from './backend/api';
-
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     CoreModule,
-    BrowserModule,
+    BrowserAnimationsModule, // ✅ Provides BrowserModule + Animation drivers at root
     AppRoutingModule,
-    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' })
-    // HttpClientModule // 👈 2. إضافته هنا لتوفير خدمات الـ HTTP //// لكل المشروع  /// للمشاريع القديمة ///
-
-    // // ربط ملفات الـ API بالمشروع وتحديد رابط الباك إند
-    // ApiModule.forRoot(() => new Configuration({
-    //   basePath:  environment.baseUrl // رابط الباك إند الرئيسي
-    // }))
+    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' }),
   ],
   providers: [
     provideClientHydration(),
-    // provideHttpClient() // 👈 تفعيل خدمات HTTP  ///  جديده ////
-    provideHttpClient(withFetch()), // 👈 2. إضافة withFetch هنا() // 👈 تفعيل خدمات HTTP  ///  جديده ////
+   // 👈 هنسجل الـ Functional Interceptor هنا
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([loadingInterceptor]) 
+    )
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,10 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IProduct } from '../shared/models/Product';
 import { ICategory } from '../shared/models/Category'; // 👈 استيراد الـ Interface
 import { IPaginatedResponse } from '../shared/models/PaginatedResponse';
+import { SKIP_LOADING } from '../core/interceptors/loading.interceptor';
 
 export class ShopParams {
   categoryId: number = 0; // 0 تعني "الكل" (All)
@@ -25,6 +26,7 @@ export class ShopService {
   // دالة جلب المنتجات
   getProducts(
     shopParams: ShopParams,
+    searchFlag:boolean
   ): Observable<IPaginatedResponse<IProduct>> {
     let params = new HttpParams();
 
@@ -42,11 +44,20 @@ export class ShopService {
 
     params = params.append('pageSize', shopParams.pageSize.toString());
     params = params.append('PageNumber', shopParams.pageNumber.toString());
-
-    return this.http.get<IPaginatedResponse<IProduct>>(
+if (searchFlag) {
+     return this.http.get<IPaginatedResponse<IProduct>>(
+      `${this.baseUrl}/api/Products/get-all-custom`,
+      { params,
+        context: new HttpContext().set(SKIP_LOADING, true) // 👈 إيقاف ظهور السبنر لهذا الـ Request
+      },
+    );
+}else{
+   return this.http.get<IPaginatedResponse<IProduct>>(
       `${this.baseUrl}/api/Products/get-all-custom`,
       { params },
     );
+}
+ 
   }
 
   // 👈 دالة جلب الأقسام من الـ API المعروض في الصورة

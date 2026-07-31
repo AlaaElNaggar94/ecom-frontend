@@ -40,14 +40,22 @@ export class ShopComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.loadAllData(); // 👈 استدعاء الدالة المجمعة فقط عند فتح المتصفح
+      // this.loadSpertedData(); // 👈 استدعاء الدالة المجمعة فقط عند فتح المتصفح
     }
   }
 
+  loadSpertedData(): void {
+  this.getProducts();
+  setTimeout(() => {
+    
+    this.getCategories(); //yyyyyyyyyyyyyyyyyyyy
+  }, 1000);
+  }
   loadAllData(): void {
     this.isLoading = true; // 1. تشغيل spinner التحميل قبلهما هم الاثنين
 
     forkJoin({
-      productsRes: this.shopService.getProducts(this.shopParams),
+      productsRes: this.shopService.getProducts(this.shopParams,false),
       categoriesRes: this.shopService.getCategories(),
     }).subscribe({
       next: ({ productsRes, categoriesRes }) => {
@@ -70,9 +78,9 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  getProducts(): void {
+  getProducts(search:boolean=false): void {
     this.isLoading = true;
-    this.shopService.getProducts(this.shopParams).subscribe({
+    this.shopService.getProducts(this.shopParams,search).subscribe({
       next: (response: IPaginatedResponse<IProduct>) => {
         this.products = response.data;
         // this.shopParams.pageNumber = response.pageNumber;
@@ -129,6 +137,7 @@ export class ShopComponent implements OnInit {
   onSearch(search: string): void {
     this.shopParams.search = search;
     this.shopParams.pageNumber = 1;
+    // this.getProducts(true);
     this.getProducts();
   }
 
