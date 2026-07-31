@@ -6,9 +6,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,14 +23,22 @@ import { loadingInterceptor } from './core/interceptors/loading.interceptor';
     BrowserAnimationsModule, // ✅ Provides BrowserModule + Animation drivers at root
     AppRoutingModule,
     NgxSpinnerModule.forRoot({ type: 'square-jelly-box' }),
+    // تسجيل الـ ToastrModule بالإعدادات
+    
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true
+    })
   ],
   providers: [
     provideClientHydration(),
-   // 👈 هنسجل الـ Functional Interceptor هنا
+    // 👈 هنسجل الـ Functional Interceptor هنا
     provideHttpClient(
       withFetch(),
-      withInterceptors([loadingInterceptor]) 
-    )
+      withInterceptors([loadingInterceptor, errorInterceptor]),
+    ),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

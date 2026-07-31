@@ -13,6 +13,7 @@ import { IPaginatedResponse } from '../shared/models/PaginatedResponse';
 import { ICategory } from '../shared/models/Category';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+import { ToasterPopupService } from '../core/Services/toaster-popup.service';
 
 @Component({
   selector: 'app-shop',
@@ -35,6 +36,7 @@ export class ShopComponent implements OnInit {
     private shopService: ShopService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
+    private toasterPopup: ToasterPopupService,
   ) {}
 
   ngOnInit(): void {
@@ -45,17 +47,16 @@ export class ShopComponent implements OnInit {
   }
 
   loadSpertedData(): void {
-  this.getProducts();
-  setTimeout(() => {
-    
-    this.getCategories(); //yyyyyyyyyyyyyyyyyyyy
-  }, 1000);
+    this.getProducts();
+    setTimeout(() => {
+      this.getCategories(); //yyyyyyyyyyyyyyyyyyyy
+    }, 1000);
   }
   loadAllData(): void {
     this.isLoading = true; // 1. تشغيل spinner التحميل قبلهما هم الاثنين
 
     forkJoin({
-      productsRes: this.shopService.getProducts(this.shopParams,false),
+      productsRes: this.shopService.getProducts(this.shopParams, false),
       categoriesRes: this.shopService.getCategories(),
     }).subscribe({
       next: ({ productsRes, categoriesRes }) => {
@@ -67,7 +68,8 @@ export class ShopComponent implements OnInit {
 
         // 3. استقبال بيانات الـ Categories
         this.categories = categoriesRes;
-
+        this.toasterPopup.success('تم استرجاع المنتجات بنجاح ');
+        // this.toasterPopup.success('تم استرجاع المنتجات ........ ');
         // 4. إيقاف التحميل
         this.isLoading = false;
       },
@@ -78,9 +80,9 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  getProducts(search:boolean=false): void {
+  getProducts(search: boolean = false): void {
     this.isLoading = true;
-    this.shopService.getProducts(this.shopParams,search).subscribe({
+    this.shopService.getProducts(this.shopParams, search).subscribe({
       next: (response: IPaginatedResponse<IProduct>) => {
         this.products = response.data;
         // this.shopParams.pageNumber = response.pageNumber;
