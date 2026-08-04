@@ -14,6 +14,7 @@ import { ICategory } from '../shared/models/Category';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToasterPopupService } from '../core/Services/toaster-popup.service';
+import { BasketService } from '../features/components/basket/basket.service';
 
 @Component({
   selector: 'app-shop',
@@ -37,6 +38,7 @@ export class ShopComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
     private toasterPopup: ToasterPopupService,
+    private basketService: BasketService,
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +157,7 @@ export class ShopComponent implements OnInit {
 
   onAddToCart(product: IProduct): void {
     console.log('Add To Cart', product);
+    this.basketService.addItemToBasket(product);
   }
 
   onDetails(product: IProduct): void {

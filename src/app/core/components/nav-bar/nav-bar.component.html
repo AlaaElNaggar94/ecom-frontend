@@ -1,65 +1,119 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
   <div class="container-fluid px-4">
-    
     <!-- Logo & Brand Name -->
     <a class="navbar-brand d-flex align-items-center me-4" routerLink="/">
-      <img src="assets/images/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+      <img
+        src="assets/images/logo.png"
+        alt="Logo"
+        width="30"
+        height="30"
+        class="d-inline-block align-text-top me-2"
+      />
       <span class="fw-bold">E-commerce</span>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
       <!-- Main Navigation Links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+          <a class="nav-link" routerLink="/home" routerLinkActive="active"
+            >Home</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/shopping" routerLinkActive="active">Shopping</a>
+          <a class="nav-link" routerLink="/shopping" routerLinkActive="active"
+            >Shopping</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about-us" routerLinkActive="active">About Us</a>
+          <a class="nav-link" routerLink="/about-us" routerLinkActive="active"
+            >About Us</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/best-seller" routerLinkActive="active">Best Seller</a>
+          <a
+            class="nav-link"
+            routerLink="/best-seller"
+            routerLinkActive="active"
+            >Best Seller</a
+          >
         </li>
       </ul>
 
       <!-- Search Form -->
-      <form class="d-flex mx-auto my-2 my-lg-0" style="max-width: 400px; width: 100%;">
-        <input class="form-control me-2 rounded-pill px-3" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-danger rounded-pill px-4" type="submit" style="background-color: #e91e63; border: none;">search</button>
+      <form
+        class="d-flex mx-auto my-2 my-lg-0"
+        style="max-width: 400px; width: 100%"
+      >
+        <input
+          class="form-control me-2 rounded-pill px-3"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button
+          class="btn btn-danger rounded-pill px-4"
+          type="submit"
+          style="background-color: #e91e63; border: none"
+        >
+          search
+        </button>
       </form>
 
       <!-- Right Side Icons & Dropdowns -->
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-        
         <!-- Shopping Cart Icon -->
-        <li class="nav-item d-flex align-items-center gap-1"> 
-          <a class="nav-link" routerLink="/cart">
-            <span class="material-icons">shopping_cart</span>
-          </a> 
-        </li>
-
+    <li class="nav-item d-flex align-items-center gap-1">
+  <a class="nav-link" routerLink="/basket">
+    <span class="material-icons">shopping_cart</span>
+    <span *ngIf="(basketCount$ | async) as count" class="count_circle">
+      {{ count }}
+    </span>
+  </a>
+</li>
         <!-- Account Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center gap-1"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="cursor: pointer"
+          >
             <span class="material-icons">account_circle</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow">
-            <li><a class="dropdown-item" routerLink="/register">Register <i class="fa fa-user-plus"></i></a></li>
-            <li><a class="dropdown-item" routerLink="/login">Login <i class="fa fa-sign-in"></i></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" routerLink="/my-orders">My-Order <i class="fa fa-list"></i></a></li>
+            <li>
+              <a class="dropdown-item" routerLink="/register"
+                >Register <i class="fa fa-user-plus"></i
+              ></a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/login"
+                >Login <i class="fa fa-sign-in"></i
+              ></a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" routerLink="/my-orders"
+                >My-Order <i class="fa fa-list"></i
+              ></a>
+            </li>
           </ul>
         </li>
-
       </ul>
-
     </div>
   </div>
 </nav>

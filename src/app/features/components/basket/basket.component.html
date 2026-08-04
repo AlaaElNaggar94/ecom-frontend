@@ -1,0 +1,115 @@
+<div class="container py-4" *ngIf="(basket$ | async) as basket">
+  <!-- Dynamic Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
+    <div class="d-flex align-items-center gap-3">
+      <div class="icon-box bg-primary-subtle text-primary rounded-3 p-2 d-flex align-items-center justify-content-center">
+        <i class="fas fa-shopping-basket fs-4"></i>
+      </div>
+      <div>
+        <h4 class="fw-bold m-0">Shopping Cart</h4>
+        <small class="text-muted" *ngIf="basket.basketItems.length > 0">
+          You have {{ getTotalCount(basket) }} items in your cart
+        </small>
+      </div>
+    </div>
+
+    <button *ngIf="basket.basketItems.length > 0" 
+            (click)="clearBasket(basket.id)" 
+            class="btn btn-outline-danger btn-sm rounded-pill px-3 d-flex align-items-center gap-2">
+      <i class="fas fa-trash-alt"></i>
+      <span>Clear Cart</span>
+    </button>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="row g-4" *ngIf="basket.basketItems.length > 0; else emptyBasket">
+    <!-- Basket Items List -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+          <div *ngFor="let item of basket.basketItems; let last = last" 
+               class="cart-item p-3 d-flex align-items-center gap-3"
+               [class.border-bottom]="!last">
+            
+            <!-- Product Image -->
+            <div class="product-img-wrapper rounded-3 overflow-hidden flex-shrink-0">
+              <img [src]="item?.image || 'assets/images/placeholder.png'" [alt]="item.name" class="w-100 h-100 object-fit-cover">
+            </div>
+            
+            <!-- Details -->
+            <div class="flex-grow-1 min-w-0">
+              <h6 class="fw-semibold text-truncate mb-1">{{ item.name }}</h6>
+              <span class="badge bg-light text-secondary border fw-normal mb-2">{{ item.category }}</span>
+              <div class="fw-bold text-primary">${{ item.price }}</div>
+            </div>
+
+            <!-- Quantity Control -->
+            <div class="quantity-control d-flex align-items-center border rounded-3 p-1 bg-light">
+              <button (click)="decrementQuantity(item)" class="btn btn-sm btn-icon rounded-2 border-0">
+                <i class="fas" [ngClass]="item.quantity === 1 ? 'fa-trash text-danger' : 'fa-minus text-secondary'"></i>
+              </button>
+              <span class="px-3 fw-bold small text-dark">{{ item.quantity }}</span>
+              <button (click)="incrementQuantity(item)" class="btn btn-sm btn-icon rounded-2 border-0">
+                <i class="fas fa-plus text-secondary"></i>
+              </button>
+            </div>
+
+            <!-- Item Total & Delete -->
+            <div class="text-end me-lg-3 min-w-80">
+              <div class="fw-bold text-dark fs-6 mb-1">${{ item.price * item.quantity }}</div>
+              <button (click)="removeItem(item.id)" class="btn btn-link text-danger p-0 border-0 text-decoration-none small opacity-75 opacity-100-hover">
+                Remove
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 20px;">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4">Order Summary</h5>
+
+          <div class="d-flex justify-content-between mb-3 text-secondary">
+            <span>Subtotal</span>
+            <span class="fw-semibold text-dark">${{ getSubtotal(basket) }}</span>
+          </div>
+          
+          <div class="d-flex justify-content-between mb-3 text-secondary">
+            <span>Shipping Fee</span>
+            <span class="fw-semibold text-dark">${{ shippingCost }}</span>
+          </div>
+
+          <hr class="my-3 opacity-25">
+
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold fs-5">Total Amount</span>
+            <span class="fw-bold fs-4 text-primary">${{ getTotal(basket) }}</span>
+          </div>
+
+          <button class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+            <span>Proceed to Checkout</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Empty Basket View -->
+<ng-template #emptyBasket>
+  <div class="text-center py-5 my-5">
+    <div class="empty-icon-wrapper mx-auto mb-4 bg-light rounded-circle d-flex align-items-center justify-content-center text-muted">
+      <i class="fas fa-shopping-bag display-4"></i>
+    </div>
+    <h4 class="fw-bold mb-2">Your Shopping Cart is Empty</h4>
+    <p class="text-muted mb-4">Looks like you haven't added any products to your cart yet.</p>
+    <a routerLink="/shop" class="btn btn-primary px-4 py-2.5 rounded-3 fw-semibold">
+      Start Shopping Now
+    </a>
+  </div>
+</ng-template>

@@ -1,9 +1,7 @@
-// export const environment = {
-//   production: false,
-//   baseUrl: 'http://localhost:4321' // رابط التست أو المحلي
-// };
+// environment.ts
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3366', // رابط التست أو المحلي
+  baseUrl: 'http://localhost:4321' // رابط التست أو المحلي
 };
+

@@ -66,17 +66,36 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
                 }
               ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
+            "default": {
+              "optimization": false,
+              "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "default"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -87,11 +106,17 @@
             "production": {
               "buildTarget": "ecom-frontend:build:production"
             },
-            "development": {
+            "test": {
+              "buildTarget": "ecom-frontend:build:test"
+            },
+            "dev-env": {
               "buildTarget": "ecom-frontend:build:development"
+            },
+            "default": {
+              "buildTarget": "ecom-frontend:build:default"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "default"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

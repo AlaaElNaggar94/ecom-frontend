@@ -3,12 +3,24 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+
+
+    "start": "ng serve -o",
+    "start:dev": "ng serve --configuration development -o",
+    "start:test": "ng serve --configuration test -o",
+    "start:prod": "ng serve --configuration production -o",
+
+
     "build": "ng build",
+    "build:test": "ng build --configuration test",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
+
+    
     "test": "ng test",
     "serve:ssr:ecom-frontend": "node dist/ecom-frontend/server/server.mjs",
-    "generate:api": "openapi-generator-cli generate -i http://localhost:4321/swagger/v1/swagger.json -g typescript-angular -o src/app/core/api"
+    "generate:api:dev": "openapi-generator-cli generate -i http://localhost:4321/swagger/v1/swagger.json -g typescript-angular -o src/app/core/api",
+    "generate:api:test": "openapi-generator-cli generate -i http://localhost:3366/swagger/v1/swagger.json -g typescript-angular -o src/app/core/api"
   },
   "private": true,
   "dependencies": {

@@ -6,3 +6,48 @@
   font-size: 20px;
   vertical-align: middle;
 }
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .material-icons {
+    font-size: 24px;
+  }
+
+  .count_circle {
+    position: absolute;
+    top: -2px;
+    right: -8px; // استخدم left: -8px لو اللائحة RTL
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    background-color: #e63946; // أو اختر اللون المناسب لتصميمك
+    border-radius: 50rem;
+    border: 2px solid #ffffff; // إضافة إطار بسيط لفصله عن خلفية النادي
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
+
+    // تأثير حركة لطيفة عند إضافة عنصر جديد
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

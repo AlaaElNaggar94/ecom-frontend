@@ -16,12 +16,7 @@ import { NotFoundComponent } from './features/components/not-found/not-found.com
 //   { path: '**', component: NotFoundComponent },
 // ];
 
-
 ///////////////******************************////////////////////////// */
-
-
-
-
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -31,6 +26,17 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/components/home/home.module').then(
         (m) => m.HomeModule,
+      ),
+  },
+  {
+    path: 'shopping',
+    loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
+  },
+  {
+    path: 'basket',
+    loadChildren: () =>
+      import('./features/components/basket/basket.module').then(
+        (m) => m.BasketModule,
       ),
   },
   {
@@ -46,10 +52,6 @@ export const routes: Routes = [
       import('./features/components/best-seller/best-seller.module').then(
         (m) => m.BestSellerModule,
       ),
-  },
-  {
-    path: 'shopping',
-    loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
   },
 
   { path: '**', component: NotFoundComponent },
