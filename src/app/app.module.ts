@@ -15,6 +15,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { NgOptimizedImage } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule, // ✅ Provides BrowserModule + Animation drivers at root
     AppRoutingModule,
     NgxSpinnerModule.forRoot({ type: 'square-jelly-box' }),
+    
     // تسجيل الـ ToastrModule بالإعدادات
     
     ToastrModule.forRoot({

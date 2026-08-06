@@ -7,10 +7,19 @@
     ></app-image-zoom>
   } @else {
     <div class="main-image">
-      <img
+      <!-- <img
         [src]="currentImage"
         [alt]="productName || 'Product'"
         class="big-photo"
+      /> -->
+
+      <img
+        width="300"
+        height="220"
+        [ngSrc]="currentImage"
+        alt="{{ currentImage }}"
+        class="img-fluid"
+        priority
       />
     </div>
   }

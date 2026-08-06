@@ -168,7 +168,7 @@ export class BasketService {
       price: item.price || item.newPrice,
       quantity,
       category: item.category || item.categoryName,
-      image: item.pictureUrl,
+      image: item.photos[0].imageUrl ,
     };
   }
 

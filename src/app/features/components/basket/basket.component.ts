@@ -11,7 +11,7 @@ import { BasketService } from './basket.service'; // اضبط مسار الـ Se
 export class BasketComponent implements OnInit {
   shippingCost = 30;
   basket$!: Observable<IBasket | null>;
-
+  baseUrl: string = 'http://localhost:4321';
   constructor(public basketService: BasketService) {}
 
   ngOnInit(): void {

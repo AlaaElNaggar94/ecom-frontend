@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ShopComponent } from './shop.component';
 import { CoreModule } from '../core/core.module';
 import { ProductCardComponent } from './components/product-list/product-card/product-card.component';
@@ -29,6 +29,7 @@ import { NgxImageZoomModule } from 'ngx-image-zoom'; // 👈 استيراد ال
     CommonModule,
     FormsModule,
     ShopRoutingModule,
+    NgOptimizedImage
   ],
   exports: [ShopComponent, CoreModule],
 })
