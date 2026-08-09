@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NotFoundComponent } from './features/components/not-found/not-found.component';
 
 // export const routes: Routes = [
 //   // توجيه الصفحة الرئيسية الافتراضية
@@ -40,6 +39,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./features/components/checkout/checkout.module').then(
+        (m) => m.CheckoutModule,
+      ),
+  },
+  {
     path: 'about-us',
     loadChildren: () =>
       import('./features/components/about-us/about-us.module').then(
@@ -54,7 +60,12 @@ export const routes: Routes = [
       ),
   },
 
-  { path: '**', component: NotFoundComponent },
+  { path: '**', 
+    loadChildren: () =>
+      import('./features/components/not-found/not-found.module').then(
+        (m) => m.NotFoundModule,
+      )
+   },
 ];
 
 @NgModule({

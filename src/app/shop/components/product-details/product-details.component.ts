@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ShopService } from '../../shop.service';
 import { IProduct } from '../../../shared/models/Product';
 import { environment } from '../../../../environments/environment';
+import { BasketService } from '../../../features/components/basket/basket.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -16,9 +18,10 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private shopService: ShopService,
+    private basketService: BasketService,
+    private toastr: ToastrService, // 👈 حقن ToastrService
     private route: ActivatedRoute,
   ) {}
-
   ngOnInit(): void {
     this.loadProduct();
   }
@@ -41,16 +44,35 @@ export class ProductDetailsComponent implements OnInit {
   // زيادة الكمية
   incrementQuantity(): void {
     if (this.quantity < 10) {
-      // حد أقصى للكمية اختياري
       this.quantity++;
+      this.toastr.info(`تم زيادة الكمية إلى ${this.quantity}`, 'الكمية', {
+        timeOut: 1500,
+      });
+    } else {
+      this.toastr.warning('الحد الأقصى للطلب هو 10 قطع', 'تنبيـه');
     }
   }
 
   // تقليل الكمية
   decrementQuantity(): void {
     if (this.quantity > 1) {
-      // عدم التقليل عن 1
       this.quantity--;
+      this.toastr.info(`تم تقليل الكمية إلى ${this.quantity}`, 'الكمية', {
+        timeOut: 1500,
+      });
+    } else {
+      this.toastr.warning('الحد الأدنى للطلب هو قطعة واحدة', 'تنبيـه');
+    }
+  }
+
+  // إضافة المنتج للسلة
+  addToCart(): void {
+    if (this.product) {
+      this.basketService.addItemToBasket(this.product, this.quantity);
+      this.toastr.success(
+        `تم إضافة ${this.quantity} × "${this.product.name}" إلى السلة بنجاح`,
+        'تمت الإضافة',
+      );
     }
   }
 }

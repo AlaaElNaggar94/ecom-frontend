@@ -166,6 +166,7 @@ export class BasketService {
       id: item.id,
       name: item.name || item.productName,
       price: item.price || item.newPrice,
+      description: item.description || item.productDescription,
       quantity,
       category: item.category || item.categoryName,
       image: item.photos[0].imageUrl ,

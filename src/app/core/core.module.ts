@@ -7,6 +7,10 @@ import { PagerComponent } from './components/pager/pager.component';
 import { ImageZoomComponent } from './components/image-zoom/image-zoom.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatBadgeModule} from '@angular/material/badge';
+
 @NgModule({
   declarations: [NavBarComponent, PagerComponent, ImageZoomComponent],
   imports: [
@@ -14,6 +18,9 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
     RouterLinkActive,
     CommonModule,
     NgxImageZoomModule,
+    MatBadgeModule, 
+    MatButtonModule, 
+    MatIconModule
   ],
   exports: [NavBarComponent, PagerComponent, ImageZoomComponent],
 })

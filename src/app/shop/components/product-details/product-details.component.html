@@ -1,6 +1,6 @@
 <div class="container my-5" *ngIf="product">
   <div class="row">
-    <!-- قسم معرض الصور (باستخدام المكون القديم Reusable Component) -->
+    <!-- قسم معرض الصور -->
     <div class="col-md-5">
       <div *ngIf="product.photos && product.photos.length > 0">
         <app-product-images
@@ -26,7 +26,7 @@
           {{ product.name }}
         </div>
 
-        <!-- أسعار المنتج واسكاونت إن وجد -->
+        <!-- أسعار المنتج والخصم -->
         <div class="price-area my-4">
           <p class="old-price mb-1" *ngIf="product.oldPrice">
             <del>{{ product.oldPrice | currency }}</del>
@@ -44,6 +44,7 @@
             (Additional tax may apply on checkout)
           </p>
         </div>
+
         <!-- التحكم في الكمية (+ / -) -->
         <div class="d-flex flex-wrap align-items-center gap-3 my-4">
           <div
@@ -69,12 +70,23 @@
             </button>
           </div>
         </div>
-
-        <!-- الأزرار والكمية -->
+        <!-- الأزرار -->
         <div class="d-flex flex-wrap align-items-center gap-3 my-4">
           <!-- زر Add to Cart -->
-          <button class="shadow btn custom-btn">
+          <button
+            class="shadow btn custom-btn"
+            (click)="addToCart()"
+            [disabled]="!product"
+          >
             <i class="fa-solid fa-cart-shopping me-1"></i> Add to cart
+          </button>
+
+          <!-- زر Continue Shopping -->
+          <button
+            class="shadow btn custom-btn bg-secondary border-0 text-white"
+            routerLink="/shopping"
+          >
+            <i class="fa-solid fa-store me-1"></i> Continue Shopping
           </button>
 
           <!-- زر Wishlist -->
@@ -94,7 +106,7 @@
         </p>
       </div>
 
-      <!-- مربع الأسئلة / خدمة العملاء -->
+      <!-- مربع الدعم -->
       <div class="row questions bg-light p-3 mx-0 rounded align-items-center">
         <div class="col-auto icon">
           <i class="fa-brands fa-rocketchat questions-icon"></i>

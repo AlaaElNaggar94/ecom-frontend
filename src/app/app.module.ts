@@ -16,6 +16,7 @@ import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { NgOptimizedImage } from '@angular/common';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,6 +42,7 @@ import { NgOptimizedImage } from '@angular/common';
       withFetch(),
       withInterceptors([loadingInterceptor, errorInterceptor]),
     ),
+    provideAnimationsAsync(),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
