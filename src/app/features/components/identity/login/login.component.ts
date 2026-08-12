@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.identityService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
         this.loading = false;
-        this.router.navigate(['/shop']); // أو أي صفحة رئيسية بعد الدخول
+        this.router.navigate(['/home']); // أو أي صفحة رئيسية بعد الدخول
       },
       error: (err) => {
         this.loading = false;

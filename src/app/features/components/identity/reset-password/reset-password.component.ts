@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdentityService } from '../identity.service';
 
@@ -28,8 +28,28 @@ export class ResetPasswordComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['token'];
 
     this.resetForm = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(6)]]
-    });
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: this.passwordMatchValidator }); // إضافة دالة المطابقة
+  }
+
+  // Custom Validator للمطابقة بين كلمتي المرور
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const newPassword = control.get('newPassword')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+      control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      // إزالة الخطأ إذا تطابقت القنوات
+      if (control.get('confirmPassword')?.hasError('passwordMismatch')) {
+        const errors = { ...control.get('confirmPassword')?.errors };
+        delete errors['passwordMismatch'];
+        control.get('confirmPassword')?.setErrors(Object.keys(errors).length ? errors : null);
+      }
+      return null;
+    }
   }
 
   onSubmit() {
@@ -42,14 +62,14 @@ export class ResetPasswordComponent implements OnInit {
     const model = {
       email: this.email,
       token: this.token,
-      newPassword: this.resetForm.value.newPassword
+      newPassword: this.resetForm.value.newPassword // إرسال كلمة المرور فقط للـ API
     };
 
     this.identityService.resetPassword(model).subscribe({
       next: (res: any) => {
         this.loading = false;
         this.message = 'تم تغيير كلمة المرور بنجاح. سيتم توجيهك لتسجيل الدخول...';
-        setTimeout(() => this.router.navigate(['/identity/login']), 3000);
+        setTimeout(() => this.router.navigate(['/account/login']), 3000);
       },
       error: (err) => {
         this.loading = false;
