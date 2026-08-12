@@ -1,0 +1,19 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <div class="card shadow p-4 border-0">
+        <div class="card-body">
+          <div *ngIf="loading" class="spinner-border text-primary mb-3" role="status"></div>
+          
+          <h4 [ngClass]="{'text-success': isSuccess, 'text-danger': !isSuccess}">
+            {{ statusMessage }}
+          </h4>
+
+          <div class="mt-4" *ngIf="!loading">
+            <a routerLink="/account/login" class="btn btn-primary">الذهاب لتسجيل الدخول</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

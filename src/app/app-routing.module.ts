@@ -59,6 +59,13 @@ export const routes: Routes = [
         (m) => m.BestSellerModule,
       ),
   },
+  {
+    path: 'account',
+    loadChildren: () =>
+      import('./features/components/identity/identity.module').then(
+        (m) => m.IdentityModule,
+      ),
+  },
 
   { path: '**', 
     loadChildren: () =>

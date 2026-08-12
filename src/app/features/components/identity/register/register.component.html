@@ -1,0 +1,65 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h3 class="mb-0">إنشاء حساب جديد</h3>
+        </div>
+        <div class="card-body p-4">
+          
+          @if (errors) {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ errors }}
+            </div>
+          }
+
+          @if (successMessage) {
+            <div class="alert alert-success" role="alert">
+              {{ successMessage }}
+            </div>
+          }
+
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label class="form-label">الاسم المعروض (Display Name)</label>
+              <input type="text" formControlName="displayName" class="form-control" 
+                [ngClass]="{'is-invalid': registerForm.get('displayName')?.touched && registerForm.get('displayName')?.invalid}">
+              <div class="invalid-feedback">الاسم المعروض مطلوب</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">اسم المستخدم (Username)</label>
+              <input type="text" formControlName="userName" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('userName')?.touched && registerForm.get('userName')?.invalid}">
+              <div class="invalid-feedback">اسم المستخدم مطلوب</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">البريد الإلكتروني (Email)</label>
+              <input type="email" formControlName="email" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.invalid}">
+              <div class="invalid-feedback">أدخل بريد إلكتروني صحيح</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">كلمة المرور (Password)</label>
+              <input type="password" formControlName="password" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.invalid}">
+              <div class="invalid-feedback">كلمة المرور يجب ألا تقل عن 6 أحرف</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="registerForm.invalid || loading">
+              @if (loading) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              تسجيل الحساب
+            </button>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <small>لديك حساب بالفعل؟ <a routerLink="/account/login" class="text-decoration-none">سجل دخولك</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

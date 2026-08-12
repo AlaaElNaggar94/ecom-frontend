@@ -110,7 +110,7 @@
             "test": {
               "buildTarget": "ecom-frontend:build:test"
             },
-            "dev-env": {
+            "development": {
               "buildTarget": "ecom-frontend:build:development"
             },
             "default": {
