@@ -1,0 +1,54 @@
+<div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 20px;">
+  <div class="card-body p-4">
+    <h5 class="fw-bold mb-4">Order Summary</h5>
+
+    <div *ngIf="basket">
+      <!-- Item List Preview -->
+      <div class="cart-items-preview mb-3" style="max-height: 240px; overflow-y: auto;">
+        <div *ngFor="let item of basket.basketItems" class="d-flex align-items-center gap-3 mb-3">
+          <img [src]="item.image ? baseUrl + item.image : 'assets/images/placeholder.png'" [alt]="item.name" class="rounded-3 object-fit-cover" style="width: 50px; height: 50px;">
+          <div class="flex-grow-1 min-w-0">
+            <div class="fw-semibold text-truncate small">{{ item.name }}</div>
+            <small class="text-muted">Qty: {{ item.quantity }}</small>
+          </div>
+          <div class="fw-bold small">${{ item.price * item.quantity }}</div>
+        </div>
+      </div>
+
+      <hr class="my-3 opacity-25">
+
+      <div class="d-flex justify-content-between mb-2 text-secondary">
+        <span>Subtotal</span>
+        <span class="fw-semibold text-dark">${{ subtotal }}</span>
+      </div>
+
+      <div class="d-flex justify-content-between mb-3 text-secondary">
+        <span>Shipping Fee</span>
+        <span class="fw-semibold text-dark">${{ shippingFee }}</span>
+      </div>
+
+      <hr class="my-3 opacity-25">
+
+      <div class="d-flex justify-content-between mb-4">
+        <span class="fw-bold fs-5">Total</span>
+        <span class="fw-bold fs-4 text-primary">${{ subtotal + shippingFee }}</span>
+      </div>
+    </div>
+
+    <!-- Place Order Button -->
+    <button 
+      type="submit" 
+      [disabled]="isSubmitting || checkoutForm.invalid"
+      class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
+    >
+      <span *ngIf="!isSubmitting">Place Order</span>
+      <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status"></span>
+      <i *ngIf="!isSubmitting" class="fas fa-check-circle"></i>
+    </button>
+
+    <!-- Back to Cart Link -->
+    <a routerLink="/basket" class="btn btn-link w-100 text-decoration-none text-muted mt-2 small">
+      <i class="fas fa-arrow-left me-1"></i> Return to Shopping Cart
+    </a>
+  </div>
+</div>

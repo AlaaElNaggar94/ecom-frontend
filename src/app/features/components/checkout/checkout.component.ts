@@ -38,6 +38,7 @@ export class CheckoutComponent implements OnInit {
         lastName: ['', Validators.required],
         street: ['', Validators.required],
         city: ['', Validators.required],
+        zipCode: ['', Validators.required],
         state: ['', Validators.required]
       }),
       paymentForm: this.fb.group({
@@ -47,11 +48,16 @@ export class CheckoutComponent implements OnInit {
   }
 
   get addressControls() {
-    return (this.checkoutForm.get('addressForm') as FormGroup).controls;
+    return (this.checkoutForm.get('addressForm') as FormGroup)?.controls || {};
   }
 
   getSubtotal(basket: IBasket): number {
     return basket.basketItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  }
+
+  // الدالة التي يتم استدعاؤها من زر الـ HTML
+  onPlaceOrder(): void {
+    this.onSubmit();
   }
 
   onSubmit(): void {

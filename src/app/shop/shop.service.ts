@@ -26,7 +26,7 @@ export class ShopService {
   // دالة جلب المنتجات
   getProducts(
     shopParams: ShopParams,
-    searchFlag:boolean
+    searchFlag: boolean,
   ): Observable<IPaginatedResponse<IProduct>> {
     let params = new HttpParams();
 
@@ -44,20 +44,20 @@ export class ShopService {
 
     params = params.append('pageSize', shopParams.pageSize.toString());
     params = params.append('PageNumber', shopParams.pageNumber.toString());
-if (searchFlag) {
-     return this.http.get<IPaginatedResponse<IProduct>>(
-      `${this.baseUrl}/api/Products/get-all-custom`,
-      { params,
-        context: new HttpContext().set(SKIP_LOADING, true) // 👈 إيقاف ظهور السبنر لهذا الـ Request
-      },
-    );
-}else{
-   return this.http.get<IPaginatedResponse<IProduct>>(
-      `${this.baseUrl}/api/Products/get-all-custom`,
-      { params },
-    );
-}
- 
+    if (searchFlag) {
+      return this.http.get<IPaginatedResponse<IProduct>>(
+        `${this.baseUrl}/api/Products/get-all-custom`,
+        {
+          params,
+          context: new HttpContext().set(SKIP_LOADING, true), // 👈 إيقاف ظهور السبنر لهذا الـ Request
+        },
+      );
+    } else {
+      return this.http.get<IPaginatedResponse<IProduct>>(
+        `${this.baseUrl}/api/Products/get-all-custom`,
+        { params },
+      );
+    }
   }
 
   // 👈 دالة جلب الأقسام من الـ API المعروض في الصورة
@@ -66,6 +66,8 @@ if (searchFlag) {
   }
 
   getProductById(id: number): Observable<IProduct> {
-    return this.http.get<IProduct>(`${this.baseUrl}/api/Products/get-by-id/${id}`);
+    return this.http.get<IProduct>(
+      `${this.baseUrl}/api/Products/get-by-id/${id}`,
+    );
   }
 }

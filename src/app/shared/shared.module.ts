@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PaginationComponent } from './component/pagination/pagination.component'; // 👈 استيراد الموديول المحدد فقط
 import { FormsModule } from '@angular/forms';
+import { OrderSummaryComponent } from './component/order-summary/order-summary.component';
 
 
 @NgModule({
   declarations: [
-    PaginationComponent
+    PaginationComponent,
+    OrderSummaryComponent
   ],
   imports: [
     FormsModule,
@@ -15,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     PaginationModule.forRoot() // 👈 تفعيل الموديول بـ forRoot()
   ],
   exports: [
-    PaginationComponent
+    PaginationComponent,
+    OrderSummaryComponent
   ]
 })
 export class SharedModule { }

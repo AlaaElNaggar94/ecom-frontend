@@ -1,0 +1,27 @@
+:host {
+  display: block;
+
+  .bg-light {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef;
+  }
+
+  .btn-success {
+    transition: all 0.2s ease-in-out;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  .spinner-border-sm {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-width: 0.15em;
+  }
+}

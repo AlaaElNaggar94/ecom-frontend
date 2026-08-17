@@ -1,185 +1,36 @@
 <div class="container py-5">
   <!-- Page Header -->
-  <div class="row mb-4">
+  <!-- <div class="row mb-4">
     <div class="col-12">
       <h2 class="fw-bold mb-1">Checkout Process</h2>
       <p class="text-muted">Complete your details to place your order</p>
     </div>
-  </div>
+  </div> -->
 
   <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
     <div class="row g-4">
       
-      <!-- Left Column: Checkout Forms -->
+      <!-- Left Column: Stepper Component -->
       <div class="col-lg-8">
-        
-        <!-- Address Section -->
-        <div class="card border-0 shadow-sm rounded-4 mb-4">
-          <div class="card-body p-4">
-            <h5 class="fw-bold mb-4 d-flex align-items-center gap-2">
-              <i class="fas fa-map-marker-alt text-primary"></i>
-              Shipping Address
-            </h5>
-
-            <div class="row g-3" formGroupName="addressForm">
-              <div class="col-md-6">
-                <label class="form-label fw-semibold text-secondary">First Name</label>
-                <input 
-                  type="text" 
-                  formControlName="firstName" 
-                  class="form-control form-control-lg rounded-3"
-                  [class.is-invalid]="addressControls['firstName'].invalid && addressControls['firstName'].touched"
-                  placeholder="John"
-                />
-                <div class="invalid-feedback">First name is required</div>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold text-secondary">Last Name</label>
-                <input 
-                  type="text" 
-                  formControlName="lastName" 
-                  class="form-control form-control-lg rounded-3"
-                  [class.is-invalid]="addressControls['lastName'].invalid && addressControls['lastName'].touched"
-                  placeholder="Doe"
-                />
-                <div class="invalid-feedback">Last name is required</div>
-              </div>
-
-              <div class="col-12">
-                <label class="form-label fw-semibold text-secondary">Street Address</label>
-                <input 
-                  type="text" 
-                  formControlName="street" 
-                  class="form-control form-control-lg rounded-3"
-                  [class.is-invalid]="addressControls['street'].invalid && addressControls['street'].touched"
-                  placeholder="123 Main Street, Apt 4B"
-                />
-                <div class="invalid-feedback">Street address is required</div>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold text-secondary">City</label>
-                <input 
-                  type="text" 
-                  formControlName="city" 
-                  class="form-control form-control-lg rounded-3"
-                  [class.is-invalid]="addressControls['city'].invalid && addressControls['city'].touched"
-                  placeholder="Cairo"
-                />
-                <div class="invalid-feedback">City is required</div>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold text-secondary">State / Country</label>
-                <input 
-                  type="text" 
-                  formControlName="state" 
-                  class="form-control form-control-lg rounded-3"
-                  [class.is-invalid]="addressControls['state'].invalid && addressControls['state'].touched"
-                  placeholder="Egypt"
-                />
-                <div class="invalid-feedback">State/Country is required</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Payment Method Section -->
-        <div class="card border-0 shadow-sm rounded-4 mb-4">
-          <div class="card-body p-4">
-            <h5 class="fw-bold mb-4 d-flex align-items-center gap-2">
-              <i class="fas fa-credit-card text-primary"></i>
-              Payment Method
-            </h5>
-
-            <div class="d-flex flex-column gap-3" formGroupName="paymentForm">
-              <label class="payment-card border rounded-3 p-3 d-flex align-items-center justify-content-between cursor-pointer">
-                <div class="d-flex align-items-center gap-3">
-                  <input type="radio" formControlName="paymentMethod" value="card" class="form-check-input mt-0">
-                  <div>
-                    <div class="fw-semibold">Credit / Debit Card</div>
-                    <small class="text-muted">Pay securely with Visa or Mastercard</small>
-                  </div>
-                </div>
-                <div class="fs-4 text-primary d-flex gap-2">
-                  <i class="fab fa-cc-visa"></i>
-                  <i class="fab fa-cc-mastercard"></i>
-                </div>
-              </label>
-
-              <label class="payment-card border rounded-3 p-3 d-flex align-items-center justify-content-between cursor-pointer">
-                <div class="d-flex align-items-center gap-3">
-                  <input type="radio" formControlName="paymentMethod" value="cod" class="form-check-input mt-0">
-                  <div>
-                    <div class="fw-semibold">Cash on Delivery (COD)</div>
-                    <small class="text-muted">Pay with cash when your package arrives</small>
-                  </div>
-                </div>
-                <i class="fas fa-money-bill-wave fs-4 text-success"></i>
-              </label>
-            </div>
-          </div>
-        </div>
-
+        <app-checkout-stepper 
+          [checkoutForm]="checkoutForm"
+          [isSubmitting]="isSubmitting">
+        </app-checkout-stepper>
       </div>
 
-      <!-- Right Column: Order Summary -->
+      <!-- Right Column: Order Summary Component -->
       <div class="col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 20px;">
-          <div class="card-body p-4">
-            <h5 class="fw-bold mb-4">Order Summary</h5>
-
-            <div *ngIf="basket$ | async as basket">
-              <!-- Item List Preview -->
-              <div class="cart-items-preview mb-3" style="max-height: 240px; overflow-y: auto;">
-                <div *ngFor="let item of basket.basketItems" class="d-flex align-items-center gap-3 mb-3">
-                  <img [src]="item.image ? baseUrl + item.image : 'assets/images/placeholder.png'" [alt]="item.name" class="rounded-3 object-fit-cover" style="width: 50px; height: 50px;">
-                  <div class="flex-grow-1 min-w-0">
-                    <div class="fw-semibold text-truncate small">{{ item.name }}</div>
-                    <small class="text-muted">Qty: {{ item.quantity }}</small>
-                  </div>
-                  <div class="fw-bold small">${{ item.price * item.quantity }}</div>
-                </div>
-              </div>
-
-              <hr class="my-3 opacity-25">
-
-              <div class="d-flex justify-content-between mb-2 text-secondary">
-                <span>Subtotal</span>
-                <span class="fw-semibold text-dark">${{ getSubtotal(basket) }}</span>
-              </div>
-
-              <div class="d-flex justify-content-between mb-3 text-secondary">
-                <span>Shipping Fee</span>
-                <span class="fw-semibold text-dark">${{ shippingFee }}</span>
-              </div>
-
-              <hr class="my-3 opacity-25">
-
-              <div class="d-flex justify-content-between mb-4">
-                <span class="fw-bold fs-5">Total</span>
-                <span class="fw-bold fs-4 text-primary">${{ getSubtotal(basket) + shippingFee }}</span>
-              </div>
-            </div>
-
-            <!-- Place Order Button -->
-            <button 
-              type="submit" 
-              [disabled]="isSubmitting"
-              class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
-            >
-              <span *ngIf="!isSubmitting">Place Order</span>
-              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status"></span>
-              <i *ngIf="!isSubmitting" class="fas fa-check-circle"></i>
-            </button>
-
-            <!-- Back to Cart Link -->
-            <a routerLink="/basket" class="btn btn-link w-100 text-decoration-none text-muted mt-2 small">
-              <i class="fas fa-arrow-left me-1"></i> Return to Shopping Cart
-            </a>
-          </div>
-        </div>
+        <app-order-summary 
+          *ngIf="basket$ | async as basket"
+          [basket]="basket" 
+          [shippingFee]="shippingFee" 
+          [subtotal]="getSubtotal(basket)"
+          [checkoutForm]="checkoutForm" 
+          [isSubmitting]="isSubmitting"
+          [baseUrl]="baseUrl"
+          
+          >
+        </app-order-summary>
       </div>
 
     </div>
