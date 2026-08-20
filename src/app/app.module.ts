@@ -7,9 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import {
+  HTTP_INTERCEPTORS,
   provideHttpClient,
   withFetch,
   withInterceptors,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
@@ -17,6 +19,7 @@ import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { NgOptimizedImage } from '@angular/common';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,8 +43,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     // 👈 هنسجل الـ Functional Interceptor هنا
     provideHttpClient(
       withFetch(),
-      withInterceptors([loadingInterceptor, errorInterceptor]),
+      withInterceptors([loadingInterceptor, errorInterceptor,authInterceptor]),
     ),
+  
     provideAnimationsAsync(),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -3,34 +3,76 @@
     <i class="fas fa-clipboard-check text-primary"></i>
     Review Your Order
   </h5>
-  <p class="text-muted small mb-4">Please review your information before placing the order.</p>
+  <p class="text-muted small mb-4">
+    Please review your information before placing the order.
+  </p>
 
+  <!-- Shipping Address -->
   <div class="p-3 bg-light rounded-3 mb-3">
     <div class="fw-bold mb-1">Shipping Address:</div>
     <div class="small text-secondary">
-      {{ checkoutForm.get('addressForm.firstName')?.value }} {{ checkoutForm.get('addressForm.lastName')?.value }}<br>
-      {{ checkoutForm.get('addressForm.street')?.value }}, {{ checkoutForm.get('addressForm.city')?.value }}, {{ checkoutForm.get('addressForm.state')?.value }}
+      {{ checkoutForm.get("addressForm.firstName")?.value }}
+      {{ checkoutForm.get("addressForm.lastName")?.value }}<br />
+      {{ checkoutForm.get("addressForm.street")?.value }},
+      {{ checkoutForm.get("addressForm.city")?.value }},
+      {{ checkoutForm.get("addressForm.state")?.value }}
     </div>
   </div>
 
+  <!-- Delivery Method (المُضاف حديثاً) -->
+  <div class="p-3 bg-light rounded-3 mb-3">
+    <div class="fw-bold mb-1">Delivery Method:</div>
+    <div class="small text-secondary">
+      <ng-container *ngFor="let method of deliveryMethods">
+        <div
+          *ngIf="
+            method.id ===
+            +checkoutForm.get('deliveryForm.deliveryMethodId')?.value
+          "
+        >
+          <span class="fw-semibold">{{ method.name }}</span> —
+          {{ method.description }}
+          <p style="margin-bottom: 0;">
+            <span class="fw-semibold">Delivery Price</span> —  ({{ method.price | currency }})
+          </p>
+          <p style="margin-bottom: 0;">
+            <span class="fw-semibold">Delivery Time</span> —{{
+              method.deliveryTime
+            }}
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Payment Method -->
   <div class="p-3 bg-light rounded-3 mb-4">
     <div class="fw-bold mb-1">Payment Method:</div>
     <div class="small text-secondary text-uppercase">
-      {{ checkoutForm.get('paymentForm.paymentMethod')?.value }}
+      {{ checkoutForm.get("paymentForm.paymentMethod")?.value }}
     </div>
   </div>
 
+  <!-- Navigation Buttons -->
   <div class="d-flex justify-content-between align-items-center mt-4">
-    <button type="button" matStepperPrevious class="btn btn-outline-secondary px-4 py-2 rounded-3">
+    <button
+      type="button"
+      matStepperPrevious
+      class="btn btn-outline-secondary px-4 py-2 rounded-3"
+    >
       <i class="fas fa-arrow-left me-2"></i> Back
     </button>
-    <button 
-      type="submit" 
+    <button
+      type="submit"
       [disabled]="isSubmitting || checkoutForm.invalid"
       class="btn btn-success px-5 py-2.5 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-2"
     >
       <span *ngIf="!isSubmitting">Confirm & Place Order</span>
-      <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status"></span>
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm"
+        role="status"
+      ></span>
       <i *ngIf="!isSubmitting" class="fas fa-check-circle"></i>
     </button>
   </div>

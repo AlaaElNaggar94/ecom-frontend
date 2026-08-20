@@ -1,25 +1,40 @@
-<mat-stepper #appStepper [linear]="true" class="rounded-4 shadow-sm p-3 bg-white mb-4">
-  
-  <!-- STEP 1: Address -->
-  <mat-step [stepControl]="addressForm" label="Address">
-    <app-checkout-address 
-      [addressForm]="addressForm">
+<mat-stepper
+  #appStepper
+  [linear]="true"
+  class="rounded-4 shadow-sm p-3 bg-white mb-4"
+>
+  <!-- في الـ Stepper Template -->
+  <mat-step [stepControl]="addressForm">
+    <!-- التعديل هنا: ربط saveAddress بـ onAddressNext() بدون تمرير متغيرات -->
+    <app-checkout-address
+      [addressForm]="addressForm"
+      [isLoading]="isAddressLoading"
+      (saveAddress)="onAddressNext(appStepper)"
+    >
     </app-checkout-address>
   </mat-step>
 
   <!-- STEP 2: Payment -->
+  <mat-step [stepControl]="deliveryForm" label="Delivery">
+    <app-checkout-delivery
+      [deliveryForm]="$any(checkoutForm.get('deliveryForm'))"
+      [deliveryMethods]="deliveryMethods"
+      (deliveryMethodSelected)="onDeliveryMethodSelected($event)"
+    >
+    </app-checkout-delivery>
+  </mat-step>
+
   <mat-step [stepControl]="paymentForm" label="Payment">
-    <app-checkout-payment 
-      [paymentForm]="paymentForm">
-    </app-checkout-payment>
+    <app-checkout-payment [paymentForm]="paymentForm"> </app-checkout-payment>
   </mat-step>
 
   <!-- STEP 3: Review -->
   <mat-step label="Review">
-    <app-checkout-review 
-      [checkoutForm]="checkoutForm" 
-      [isSubmitting]="isSubmitting">
+    <app-checkout-review
+      [checkoutForm]="checkoutForm"
+      [isSubmitting]="isSubmitting"
+      [deliveryMethods]="deliveryMethods"
+    >
     </app-checkout-review>
   </mat-step>
-
 </mat-stepper>

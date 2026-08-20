@@ -11,6 +11,8 @@ import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.co
 import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
 import { CheckoutStepperComponent } from './checkout-stepper/checkout-stepper.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { CheckoutDeliveryComponent } from './checkout-delivery/checkout-delivery.component';
+import { CheckoutSuccessComponent } from './checkout-success/checkout-success.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { SharedModule } from '../../../shared/shared.module';
     CheckoutAddressComponent,
     CheckoutPaymentComponent,
     CheckoutReviewComponent,
-    CheckoutStepperComponent
+    CheckoutStepperComponent,
+    CheckoutDeliveryComponent,
+    CheckoutSuccessComponent
   ],
   imports: [
     CommonModule,

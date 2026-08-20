@@ -1,0 +1,47 @@
+<div class="success-container">
+  <div class="success-card">
+    
+    <!-- أيقونة النجاح المتحركة -->
+    <div class="icon-wrapper">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+
+    <!-- العنوان والرسالة الترحيبية -->
+    <h2 class="title">تم إنشاء الطلب بنجاح!</h2>
+    <p class="subtitle">شكراً لتسوقك معنا. تم استلام طلبك وبانتظار تجهيزه وشحنه.</p>
+
+    <!-- بطاقة تفاصيل الطلب -->
+    <div class="order-details" *ngIf="order">
+      <div class="detail-row">
+        <span>رقم الطلب:</span>
+        <strong>#{{ order.id }}</strong>
+      </div>
+      <div class="detail-row">
+        <span>تاريخ الطلب:</span>
+        <strong>{{ order.orderDate | date:'mediumDate' }}</strong>
+      </div>
+      <div class="detail-row">
+        <span>طريقة التوصيل:</span>
+        <strong>{{ order.deliveryMethod }}</strong>
+      </div>
+      <div class="detail-row total-row">
+        <span>الإجمالي المدفوع:</span>
+        <strong>{{ order.total | currency }}</strong>
+      </div>
+    </div>
+
+    <!-- أزرار الإجراءات -->
+    <div class="actions">
+      <button class="btn btn-primary" routerLink="/orders">
+        <i class="fas fa-box-open"></i> عرض قائمة الطلبات
+      </button>
+      <button class="btn btn-outline" routerLink="/shopping">
+        متابعة التسوق <i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+
+  </div>
+</div>

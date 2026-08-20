@@ -7,32 +7,33 @@
     </div>
   </div> -->
 
-  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="checkoutForm" (ngSubmit)="submitOrder()">
     <div class="row g-4">
-      
       <!-- Left Column: Stepper Component -->
       <div class="col-lg-8">
-        <app-checkout-stepper 
+        <app-checkout-stepper
           [checkoutForm]="checkoutForm"
-          [isSubmitting]="isSubmitting">
+          [deliveryMethods]="deliveryMethods"
+          [isSubmitting]="isSubmitting"
+          [isAddressLoading]="isAddressLoading"
+          (saveAddress)="onSaveAddress($event)"
+          (deliveryMethodSelected)="onDeliveryMethodSelected($event)"
+          (submitOrder)="submitOrder()"
+        >
         </app-checkout-stepper>
       </div>
 
       <!-- Right Column: Order Summary Component -->
       <div class="col-lg-4">
-        <app-order-summary 
+        <app-order-summary
           *ngIf="basket$ | async as basket"
-          [basket]="basket" 
-          [shippingFee]="shippingFee" 
-          [subtotal]="getSubtotal(basket)"
-          [checkoutForm]="checkoutForm" 
+          [basket]="basket"
+          [checkoutForm]="checkoutForm"
           [isSubmitting]="isSubmitting"
           [baseUrl]="baseUrl"
-          
-          >
+        >
         </app-order-summary>
       </div>
-
     </div>
   </form>
 </div>

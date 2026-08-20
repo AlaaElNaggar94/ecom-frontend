@@ -1,34 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { BasketService } from '../basket/basket.service'; // اضبط المسار المباشر لخدمتك
-import { IBasket } from '../../../shared/models/BasketItem'; // اضبط المسار المباشر لنموذج السلة
+import { BasketService } from '../basket/basket.service';
+import { IdentityService } from '../identity/identity.service';
+import { CheckoutService } from './checkout.service';
+import { IBasket } from '../../../shared/models/BasketItem';
+import { CheckoutStepperComponent } from './checkout-stepper/checkout-stepper.component';
 import { environment } from '../../../../environments/environment';
+import { IAddress, IOrderToCreate } from '../../../shared/models/order';
+import { CdkStepper } from '@angular/cdk/stepper';
+import { IDeliveryMethod } from '../../../shared/models/checkout';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.scss'
+  styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent implements OnInit {
+  @ViewChild(CheckoutStepperComponent) appStepper!: CheckoutStepperComponent;
+
   checkoutForm!: FormGroup;
   basket$!: Observable<IBasket | null>;
-  shippingFee: number = 10;
+  shippingFee: number = 0;
+  readonly baseUrl = environment.baseUrl; // السطر المفقود 1
+  deliveryMethods: IDeliveryMethod[] = [];
+  // Loading States
   isSubmitting: boolean = false;
-  readonly baseUrl = environment.baseUrl;
+  isAddressLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private basketService: BasketService,
+    private accountService: IdentityService,
+    private checkoutService: CheckoutService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.basket$ = this.basketService.basket$;
     this.initCheckoutForm();
+    this.populateFormWithUserData();
+    this.getDeliveryMethods();
   }
 
   private initCheckoutForm(): void {
@@ -39,48 +54,121 @@ export class CheckoutComponent implements OnInit {
         street: ['', Validators.required],
         city: ['', Validators.required],
         zipCode: ['', Validators.required],
-        state: ['', Validators.required]
+        state: ['', Validators.required],
+      }),
+      deliveryForm: this.fb.group({
+        deliveryMethodId: ['', Validators.required],
       }),
       paymentForm: this.fb.group({
-        paymentMethod: ['card', Validators.required]
-      })
+        paymentMethod: ['card', Validators.required],
+      }),
+    });
+  }
+  // ملء الفورم مسبقاً بعنوان المستخدم من السيرفر إذا كان موجوداً
+
+  getDeliveryMethods(): void {
+    this.checkoutService.getDeliveryMethods().subscribe({
+      next: (methods) => (this.deliveryMethods = methods),
+      error: (err) => console.error('Failed to fetch delivery methods', err),
     });
   }
 
-  get addressControls() {
-    return (this.checkoutForm.get('addressForm') as FormGroup)?.controls || {};
+// خيار 2: إذا كنت تمرر فقط رقم السعر (deliveryFee)
+  onDeliveryMethodSelected(deliveryFee: number): void {
+    this.shippingFee = deliveryFee;
+    this.basketService.setShippingPrice(deliveryFee);
   }
 
-  getSubtotal(basket: IBasket): number {
-    return basket.basketItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  private populateFormWithUserData(): void {
+    this.accountService.getUserAddress().subscribe({
+      next: (address: IAddress) => {
+        if (address) {
+          this.checkoutForm.get('addressForm')?.patchValue(address);
+        }
+      },
+      error: (err) => console.error('Failed to load address', err),
+    });
   }
 
-  // الدالة التي يتم استدعاؤها من زر الـ HTML
-  onPlaceOrder(): void {
-    this.onSubmit();
+
+  // Step 1 API Call: حفظ العنوان
+  onSaveAddress(appStepper: CdkStepper): void {
+    const addressFormGroup = this.checkoutForm.get('addressForm');
+
+    if (addressFormGroup?.invalid) {
+      addressFormGroup.markAllAsTouched();
+      this.toastr.warning(
+        'Please complete all required address fields',
+        'Validation Error',
+      );
+      return;
+    }
+
+    this.isAddressLoading = true;
+    const addressData = addressFormGroup?.value;
+
+    this.accountService.updateUserAddress(addressData).subscribe({
+      next: () => {
+        this.isAddressLoading = false;
+        this.toastr.success('Address saved successfully', 'Success');
+        appStepper.next();
+      },
+      error: (err: any) => {
+        this.isAddressLoading = false;
+        this.toastr.error('Failed to save address', 'Error');
+      },
+    });
   }
 
+
+
+  // الدالة المفقودة 3: Alias لـ submitOrder للتوافق مع onSubmit
   onSubmit(): void {
+    this.submitOrder();
+  }
+
+  // Final Step API Call: إنشاء الطلب ومسح السلة
+  submitOrder(): void {
     if (this.checkoutForm.invalid) {
       this.checkoutForm.markAllAsTouched();
-      this.toastr.warning('Please complete all required fields', 'Validation Error');
+      this.toastr.warning(
+        'Please complete all required fields',
+        'Validation Error',
+      );
       return;
     }
 
     const basket = this.basketService.getCurrentBasketValue();
-    if (!basket || basket.basketItems.length === 0) {
+    if (!basket || !basket.basketItems || basket.basketItems.length === 0) {
       this.toastr.error('Your cart is empty', 'Error');
       return;
     }
 
     this.isSubmitting = true;
 
-    // محاكاة إرسال الطلب (يمكن ربطه بـ OrderService لاحقاً)
-    setTimeout(() => {
-      this.toastr.success('Your order has been placed successfully!', 'Order Confirmed');
-      this.basketService.deleteBasket(basket.id);
-      this.isSubmitting = false;
-      this.router.navigateByUrl('/shop');
-    }, 1500);
+    const orderToCreate :IOrderToCreate = {
+      basketId: basket.id,
+      deliveryMethodId: +this.checkoutForm.get('deliveryForm.deliveryMethodId')
+        ?.value,
+      shippingAddress: this.checkoutForm.get('addressForm')?.value,
+    };
+
+    console.log("orderToCreate",orderToCreate);
+    
+    this.checkoutService.createOrder(orderToCreate).subscribe({
+      next: (order: any) => {
+        this.toastr.success('Order created successfully', 'Order Confirmed');
+        this.basketService.deleteBasket(basket.id);
+        this.isSubmitting = false;
+        this.router.navigateByUrl('/checkout/success');
+      },
+      error: (err: any) => {
+        this.isSubmitting = false;
+        this.toastr.error(
+          err.error?.message || 'Order creation failed',
+          'Error',
+        );
+      },
+    });
   }
 }

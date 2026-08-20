@@ -1,0 +1,150 @@
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  padding: 20px;
+  background-color: #f8f9fa;
+
+  .success-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    .icon-wrapper {
+      margin-bottom: 24px;
+
+      .checkmark {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #28a745;
+        stroke-miterlimit: 10;
+        box-shadow: inset 0px 0px 0px #28a745;
+        animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        margin: 0 auto;
+      }
+
+      .checkmark-circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: #28a745;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      }
+
+      .checkmark-check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+      }
+    }
+
+    .title {
+      font-size: 1.6rem;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #6c757d;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .order-details {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 30px;
+      text-align: right;
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 0.9rem;
+        color: #495057;
+
+        &:not(:last-child) {
+          border-bottom: 1px dashed #dee2e6;
+        }
+
+        &.total-row {
+          font-size: 1.05rem;
+          color: #212529;
+          font-weight: bold;
+          padding-top: 12px;
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        &.btn-primary {
+          background-color: #0d6efd;
+          color: #ffffff;
+          border: none;
+
+          &:hover {
+            background-color: #0b5ed7;
+          }
+        }
+
+        &.btn-outline {
+          background-color: transparent;
+          color: #6c757d;
+          border: 1px solid #ced4da;
+
+          &:hover {
+            background-color: #f8f9fa;
+            color: #212529;
+          }
+        }
+      }
+    }
+  }
+}
+
+// أنيميشن صحة الأيقونة
+@keyframes stroke {
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes scale {
+  0%, 100% { transform: none; }
+  50% { transform: scale3d(1.1, 1.1, 1); }
+}
+
+@keyframes fill {
+  100% { box-shadow: inset 0px 0px 0px 30px rgba(40, 167, 69, 0.1); }
+}

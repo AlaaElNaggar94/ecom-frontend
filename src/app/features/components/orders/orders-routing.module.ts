@@ -1,17 +1,14 @@
-import { CheckoutSuccessComponent } from './checkout-success/checkout-success.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from '../not-found/not-found.component';
-import { CheckoutComponent } from './checkout.component';
-
+import { OrdersComponent } from './orders/orders.component';
 
 export const routes: Routes = [
   // توجيه الصفحة الرئيسية الافتراضية
 
   // الراوتس الأساسية
-  { path: '', component: CheckoutComponent },
-  { path: 'success', component: CheckoutSuccessComponent },
+  { path: '', component: OrdersComponent },
   //
   // راوت حماية للصفحات غير الموجودة (404)
   { path: '**', component: NotFoundComponent },
@@ -22,4 +19,4 @@ export const routes: Routes = [
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CheckoutRoutingModule { }
+export class OrdersRoutingModule { }

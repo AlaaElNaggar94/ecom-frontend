@@ -7,8 +7,10 @@ import {
   IBasket,
   IBasketItem,
   Basket,
+  IBasketTotal,
 } from './../../../shared/models/BasketItem'; // اضبط المسار حسب مشروعك
 import { IProduct } from '../../../shared/models/Product';
+import { IDeliveryMethod } from '../../../shared/models/checkout';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +22,38 @@ export class BasketService {
   private basketSource = new BehaviorSubject<IBasket | null>(null);
   basket$ = this.basketSource.asObservable();
 
+  // BehaviorSubject للحفاظ على حالة السلة وبث والتفاعل مع أي تغيير
+  private basketSourceTotal = new BehaviorSubject<IBasketTotal | null>(null);
+  basketTotal$ = this.basketSourceTotal.asObservable();
+
   constructor(private http: HttpClient) {}
 
   // جلب السلة الحالية المجهزة
   getCurrentBasketValue(): IBasket | null {
     return this.basketSource.value;
+  }
+
+  // متغيّر لحفظ تكلفة الشحن المحددة (افتراضياً 0)
+  shippingPrice = 0;
+
+  // دالة تعيين سعر الشحن عند اختيار طريقة التوصيل
+  setShippingPrice(deliveryFee: number) {
+    this.shippingPrice = deliveryFee;
+    this.calculateTotal(); // إعادة حساب الإجمالي فور التغيير
+  }
+
+  calculateTotal() {
+    const basket = this.getCurrentBasketValue();
+    if (!basket) return;
+
+    const shipping = this.shippingPrice;
+    const subtotal = basket.basketItems.reduce(
+      (a, c) => c.price * c.quantity + a,
+      0,
+    );
+    const total = subtotal + shipping;
+
+    this.basketSourceTotal.next({ shipping, subtotal, total });
   }
 
   // 1. جلب السلة من الباك إند عند فتح التطبيق
@@ -34,6 +63,7 @@ export class BasketService {
       .pipe(
         map((basket: IBasket) => {
           this.basketSource.next(basket);
+          this.calculateTotal();
           return basket;
         }),
       );
@@ -46,6 +76,8 @@ export class BasketService {
       .subscribe({
         next: (response) => {
           this.basketSource.next(response);
+          this.calculateTotal();
+
           localStorage.setItem('basket_id', response.id);
         },
         error: (error) => {
@@ -57,12 +89,16 @@ export class BasketService {
   // 3. إضافة منتج للسلة (تُستدعى عند الضغط على Add To Cart)
   // السماح بمرور IProduct أو IBasketItem
   addItemToBasket(item: IProduct | IBasketItem, quantity = 1): void {
-    const itemToAdd: IBasketItem = this.isProduct(item) 
-      ? this.mapProductToBasketItem(item, quantity) 
+    const itemToAdd: IBasketItem = this.isProduct(item)
+      ? this.mapProductToBasketItem(item, quantity)
       : item;
 
     const basket = this.getCurrentBasketValue() ?? this.createBasket();
-    basket.basketItems = this.addOrUpdateItem(basket.basketItems, itemToAdd, quantity);
+    basket.basketItems = this.addOrUpdateItem(
+      basket.basketItems,
+      itemToAdd,
+      quantity,
+    );
     this.setBasket(basket);
   }
   // addItemToBasket(item: IBasketItem, quantity = 1) {
@@ -132,6 +168,8 @@ export class BasketService {
       .subscribe({
         next: () => {
           this.basketSource.next(null);
+          this.calculateTotal();
+
           localStorage.removeItem('basket_id');
         },
         error: (err) => console.error('Error deleting basket:', err),
@@ -169,7 +207,7 @@ export class BasketService {
       description: item.description || item.productDescription,
       quantity,
       category: item.category || item.categoryName,
-      image: item.photos[0].imageUrl ,
+      image: item.photos[0].imageUrl,
     };
   }
 
