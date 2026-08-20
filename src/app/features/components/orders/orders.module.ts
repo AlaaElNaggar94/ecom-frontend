@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderItemComponent } from './orders/order-item/order-item.component';
+import { OrderDetailedComponent } from './orders/order-detailed/order-detailed.component';
 
 
 @NgModule({
   declarations: [
     OrdersComponent,
-    OrderItemComponent
+    OrderItemComponent,
+    OrderDetailedComponent
   ],
   imports: [
     CommonModule,

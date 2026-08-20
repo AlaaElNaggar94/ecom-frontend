@@ -1,0 +1,102 @@
+<div class="container my-4" *ngIf="order">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>تفاصيل الطلب #{{ order.id }}</h2>
+    <button class="btn btn-outline-secondary" routerLink="/orders">
+      <i class="fas fa-arrow-right"></i> العودة للطلبات
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- قائمة المنتجات -->
+    <div class="col-md-8">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">المنتجات المطلوبة</div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>المنتج</th>
+                  <th>السعر</th>
+                  <th>الكمية</th>
+                  <th>الإجمالي</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of order.orderItems">
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img
+                        [src]="
+                          item?.mainImage
+                            ? baseUrl + item.mainImage
+                            : 'assets/images/placeholder.png'
+                        "
+                        [alt]="item.productName"
+                        style="
+                          width: 50px;
+                          height: 50px;
+                          object-fit: cover;
+                          border-radius: 6px;
+                        "
+                      />
+                      <span>{{ item.productName }}</span>
+                    </div>
+                  </td>
+                  <td>{{ item.price | currency }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>
+                    <strong>{{ item.price * item.quantity | currency }}</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ملخص الطلب والعنوان -->
+    <div class="col-md-4">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-light"><strong>عنوان الشحن</strong></div>
+        <div class="card-body">
+          <p class="mb-1">
+            <strong>الاسم:</strong> {{ order.shippingAddress.firstName }}
+            {{ order.shippingAddress.lastName }}
+          </p>
+
+          <p class="mb-1">
+            <strong>الشارع:</strong> {{ order.shippingAddress.street }}
+          </p>
+          <p class="mb-1">
+            <strong>المدينة/المحافظة:</strong> {{ order.shippingAddress.city }}،
+            {{ order.shippingAddress.state }}
+          </p>
+          <p class="mb-0">
+            <strong>الرمز البريدي:</strong> {{ order.shippingAddress.zipCode }}
+          </p>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-light"><strong>ملخص الحساب</strong></div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span>المجموع الفرعي:</span>
+            <span>{{ order.subTotal | currency }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>طريقة التوصيل:</span>
+            <span>{{ order.deliveryMethod }}</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between fw-bold text-success">
+            <span>الإجمالي:</span>
+            <span>{{ order.total | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

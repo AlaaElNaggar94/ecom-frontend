@@ -1,0 +1,19 @@
+.container {
+  min-height: 70vh;
+}
+
+.table {
+  th {
+    font-weight: 600;
+  }
+  
+  td {
+    vertical-align: middle;
+  }
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
